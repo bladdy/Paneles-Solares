@@ -1,0 +1,78 @@
+---
+const steps = [
+  {
+    number: "01",
+    title: "Evaluación del consumo y del inmueble",
+    description: "Analizamos tu patrón de consumo eléctrico y las características técnicas de tu propiedad.",
+  },
+  {
+    number: "02",
+    title: "Diseño de una propuesta personalizada",
+    description: "Elaboramos un proyecto adaptado a tus necesidades con base en la evaluación realizada.",
+  },
+  {
+    number: "03",
+    title: "Instalación conforme a las condiciones técnicas aplicables",
+    description: "Realizamos la instalación siguiendo los estándares técnicos y normativas vigentes.",
+  },
+  {
+    number: "04",
+    title: "Seguimiento y explicación del funcionamiento",
+    description: "Te capacitamos en el uso del sistema y brindamos seguimiento post-instalación.",
+  },
+];
+---
+
+<section id="como-funciona" class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-forest mb-4">
+        ¿Cómo funciona?
+      </h2>
+      <p class="text-lg text-charcoal/80 max-w-3xl mx-auto">
+        Un proceso claro y profesional de principio a fin
+      </p>
+    </div>
+    
+    <!-- Desktop horizontal layout -->
+    <div class="hidden lg:flex items-start justify-between relative">
+      <!-- Connecting line -->
+      <div class="absolute top-12 left-0 right-0 h-0.5 bg-light-green -z-10"></div>
+      
+      {steps.map((step, index) => (
+        <div class="flex-1 relative">
+          <div class="flex flex-col items-center text-center px-4">
+            <div class="w-24 h-24 bg-forest rounded-full flex items-center justify-center mb-6 shadow-lg relative z-10">
+              <span class="text-solar font-display font-bold text-2xl">{step.number}</span>
+            </div>
+            <h3 class="text-lg font-display font-semibold text-forest mb-3 min-h-[3.5rem] flex items-center">
+              {step.title}
+            </h3>
+            <p class="text-charcoal/80 leading-relaxed">
+              {step.description}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+    
+    <!-- Mobile vertical layout -->
+    <div class="lg:hidden space-y-8">
+      {steps.map((step) => (
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-16 h-16 bg-forest rounded-full flex items-center justify-center shadow-lg">
+            <span class="text-solar font-display font-bold text-xl">{step.number}</span>
+          </div>
+          <div class="flex-1 pt-2">
+            <h3 class="text-lg font-display font-semibold text-forest mb-2">
+              {step.title}
+            </h3>
+            <p class="text-charcoal/80 leading-relaxed">
+              {step.description}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,151 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import { siteConfig } from '../data/site';
+
+interface ProjectType {
+  value: string;
+  label: string;
+}
+
+const projectTypes: ProjectType[] = [
+  { value: 'residencial', label: 'Residencial' },
+  { value: 'comercial', label: 'Comercial' },
+  { value: 'industrial', label: 'Industrial' },
+  { value: 'backup', label: 'Sistema con respaldo' },
+];
+---
+
+<MainLayout title="Solicitar Cotización Solar" description="Solicite una cotización solar personalizada para su hogar o empresa">
+  <Navbar />
+<section class="relative flex items-center overflow-hidden pt-20">
+      <div class="max-w-2xl mx-auto">
+        <form class="space-y-8 pt-6 pb-6" novalidate>
+        
+        <!-- Type of Project -->
+        <div>
+          <label class="block text-sm font-medium text-forest mb-2">
+            Tipo de proyecto
+          </label>
+          <select 
+            class="w-full px-4 py-3 rounded-xl border border-light-green bg-white text-forest font-medium focus-visible:outline-2 focus-visible:focus-ring-solar focus-visible:border-transparent transition-colors"
+            required
+          >
+            <option value="" disabled>Seleccione el tipo de proyecto</option>
+            {projectTypes.map((type) => (
+              <option value={type.value}>
+                {type.label}
+              </option>
+            ))}
+          </select>
+        </div>
+        
+        <!-- Monthly Consumption (Watts) -->
+        <div>
+          <label class="block text-sm font-medium text-forest mb-2">
+            Consumo mensual (Watts)
+            <span class="text-charcoal/60 text-xs ml-2">Ej: 5000</span>
+          </label>
+          <input
+            type="number"
+            class="w-full px-4 py-3 rounded-xl border border-light-green bg-white text-forest font-medium focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-solar focus-visible:border-transparent transition-colors"
+            placeholder="Consumo mensual en Watts"
+            required
+            min="100"
+            max="50000"
+          />
+          <p class="text-charcoal/60 text-sm mt-1">
+            Tu consumo mensual en watios-hora (kWh) o la potencia máxima
+          </p>
+        </div>
+        
+        <!-- Bimonthly Consumption (Mexico context) -->
+        <div>
+          <label class="block text-sm font-medium text-forest mb-2">
+            Consumo bimestral (Mexico)
+            <span class="text-charcoal/60 text-xs ml-2">Ej: 15000</span>
+          </label>
+          <input
+            type="number"
+            class="w-full px-4 py-3 rounded-xl border border-light-green bg-white text-forest font-medium focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-solar focus-visible:border-transparent transition-colors"
+            placeholder="Consumo cada 2 meses en Watts"
+            required
+            min="100"
+            max="150000"
+          />
+          <p class="text-charcoal/60 text-sm mt-1">
+            En México las tarifas eléctricas son bimestrales, este dato ayuda
+          </p>
+          <p class="text-charcoal/60 text-sm mt-1">
+            a un cálculo más preciso de tu sistema necesario
+          </p>
+        </div>
+        
+        <!-- Contact Name -->
+        <div>
+          <label class="block text-sm font-medium text-forest mb-2">
+            Nombre completo
+          </label>
+          <input
+            type="text"
+            class="w-full px-4 py-3 rounded-xl border border-light-green bg-white text-forest font-medium focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-solar focus-visible:border-transparent transition-colors"
+            required
+            placeholder="Tu nombre completo"
+          />
+        </div>
+        
+        <!-- Email -->
+        <div>
+          <label class="block text-sm font-medium text-forest mb-2">
+            Correo electrónico
+          </label>
+          <input
+            type="email"
+            class="w-full px-4 py-3 rounded-xl border border-light-green bg-white text-forest font-medium focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-solar focus-visible:border-transparent transition-colors"
+            required
+            placeholder="tu@email.com"
+          />
+        </div>
+        
+        <!-- Phone -->
+        <div>
+          <label class="block text-sm font-medium text-forest mb-2">
+            Teléfono
+            <span class="text-charcoal/60 text-xs ml-2">Ej: +52 55 1234 5678</span>
+          </label>
+          <input
+            type="tel"
+            class="w-full px-4 py-3 rounded-xl border border-light-green bg-white text-forest font-medium focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-solar focus-visible:border-transparent transition-colors"
+            placeholder="+52 55 1234 5678"
+            required
+            pattern="[\d\s\+\(\)\-]{10,}"
+          />
+        </div>
+        
+        <!-- Property Type / Additional Comments -->
+        <div>
+          <label class="block text-sm font-medium text-forest mb-2">
+            Tipo de propiedad o comentarios adicionales
+            <span class="text-charcoal/60 text-xs ml-2">Opcional</span>
+          </label>
+          <textarea
+            rows="3"
+            class="w-full px-4 py-3 rounded-xl border border-light-green bg-white text-forest font-medium focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-solar focus-visible:border-transparent transition-colors"
+            placeholder="¿Casa, departamento, oficina? ¿Algún requisito especial?"
+          ></textarea>
+        </div>
+        
+        <!-- Submit Button -->
+        <div>
+          <button
+            type="submit"
+            class="w-full bg-solar text-forest py-4 rounded-lg font-semibold text-lg hover:bg-solar/90 transition-all duration-200 shadow-lg hover:shadow-xl focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2"
+          >
+            Enviar solicitud
+          </button>
+        </div>
+        
+      </form>
+      </div>
+  </section>
+</MainLayout>

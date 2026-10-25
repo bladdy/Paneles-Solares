@@ -1,0 +1,73 @@
+---
+const solutions = [
+  {
+    title: "Paneles solares residenciales",
+    description: "Sistemas fotovoltaicos diseñados para hogares, optimizados para tu consumo y con instalación profesional.",
+    image: "/images/solution-residential.jpg",
+  },
+  {
+    title: "Soluciones solares comerciales e industriales",
+    description: "Proyectos a gran escala para empresas, con análisis de viabilidad y soluciones adaptadas a tus necesidades energéticas.",
+    image: "/images/solution-commercial.jpg",
+  },
+  {
+    title: "Sistemas de respaldo, inversores y almacenamiento energético",
+    description: "Soluciones complementarias para mayor autonomía y confiabilidad en el suministro eléctrico, según tu proyecto.",
+    image: "/images/solution-industrial.jpg",
+  },
+];
+---
+
+<section id="soluciones" class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-forest mb-4">
+        Energía solar diseñada para tus necesidades
+      </h2>
+      <p class="text-lg text-charcoal/80 max-w-3xl mx-auto">
+        Ofrecemos soluciones integrales adaptadas a diferentes tipos de proyectos
+      </p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {solutions.map((solution, index) => (
+        <article class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 border border-light-green group">
+          <div class="relative h-48 overflow-hidden">
+            <img
+              src={solution.image}
+              alt={`Instalación de ${solution.title.toLowerCase()}`}
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              loading="lazy"
+              width="400"
+              height="200"
+            />
+          </div>
+          <div class="p-6">
+            <div class="flex items-center space-x-3 mb-4">
+              <div class="flex-shrink-0 w-12 h-12 bg-forest/10 rounded-lg flex items-center justify-center text-forest">
+                <svg class="w-6 h-6 text-forest" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-display font-semibold text-forest">
+                {solution.title}
+              </h3>
+            </div>
+            <p class="text-charcoal/80 mb-6 leading-relaxed">
+              {solution.description}
+            </p>
+            <a
+              href="#contacto"
+              class="inline-flex items-center text-forest font-semibold hover:text-solar transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-solar focus-visible:outline-offset-2 rounded"
+            >
+              Solicitar información
+              <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

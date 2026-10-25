@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme {
+  --color-forest: #123B2A;
+  --color-solar: #F5B82E;
+  --color-natural: #F6F8F5;
+  --color-charcoal: #26352E;
+  --color-light-green: #DCE9DF;
+  --color-white: #FFFFFF;
+  
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  --font-display: 'Manrope', 'Inter', system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-sans);
+  }
+  
+  body {
+    @apply bg-white text-charcoal antialiased;
+  }
+  
+  :focus-visible {
+    @apply outline-2 outline-solar outline-offset-2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

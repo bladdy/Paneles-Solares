@@ -1,0 +1,77 @@
+---
+const projects = [
+  {
+    title: "Instalación residencial",
+    category: "Residencial",
+    image: "/images/project-residential.jpg",
+    description: "Sistema fotovoltaico para vivienda unifamiliar",
+  },
+  {
+    title: "Proyecto comercial",
+    category: "Comercial",
+    image: "/images/project-commercial.jpg",
+    description: "Instalación para centro comercial",
+  },
+  {
+    title: "Parque solar industrial",
+    category: "Industrial",
+    image: "/images/project-industrial.jpg",
+    description: "Gran instalación para industria",
+  },
+  {
+    title: "Sistema con respaldo",
+    category: "Residencial",
+    image: "/images/project-backup.jpg",
+    description: "Sistema con almacenamiento energético",
+  },
+];
+---
+
+<section id="proyectos" class="py-20 bg-natural">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-forest mb-4">
+        Proyectos
+      </h2>
+      <p class="text-lg text-charcoal/80 max-w-3xl mx-auto">
+        Galería de instalaciones (imágenes ilustrativas)
+      </p>
+    </div>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {projects.map((project) => (
+        <article class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 group">
+          <div class="relative h-64 overflow-hidden">
+            <img
+              src={project.image}
+              alt={project.title}
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              loading="lazy"
+              width="300"
+              height="256"
+            />
+            <div class="absolute top-3 left-3">
+              <span class="bg-forest/90 text-white px-3 py-1 rounded-full text-xs font-medium">
+                {project.category}
+              </span>
+            </div>
+          </div>
+          <div class="p-4">
+            <h3 class="text-base font-semibold text-forest mb-1">
+              {project.title}
+            </h3>
+            <p class="text-sm text-charcoal/70">
+              {project.description}
+            </p>
+          </div>
+        </article>
+      ))}
+    </div>
+    
+    <div class="text-center mt-12">
+      <p class="text-sm text-charcoal/70 italic">
+        Las imágenes mostradas son ilustrativas. No se presentan como trabajos propios de la empresa.
+      </p>
+    </div>
+  </div>
+</section>

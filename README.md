@@ -1,43 +1,71 @@
-# Astro Starter Kit: Minimal
+# EnerSol - Sitio Web Corporativo de Energía Solar
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Sitio web profesional para empresa dedicada a la venta, instalación y mantenimiento de paneles solares, inversores y soluciones de energía renovable.
 
-> ğŸ§‘â€ğŸš€ **Seasoned astronaut?** Delete this file. Have fun!
+## Tecnologías
 
-## ğŸš€ Project Structure
+- [Astro](https://astro.build/) - Framework principal
+- [Tailwind CSS](https://tailwindcss.com/) - Estilos
+- TypeScript
 
-Inside of your Astro project, you'll see the following folders and files:
+## Instalación
 
-```text
-/
-â”œâ”€â”€ public/
-â”œâ”€â”€ src/
-â”‚   â””â”€â”€ pages/
-â”‚       â””â”€â”€ index.astro
-â””â”€â”€ package.json
-```
+`ash
+npm install
+`
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Desarrollo
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+`ash
+npm run dev
+`
 
-Any static assets, like images, can be placed in the `public/` directory.
+El sitio estará disponible en http://localhost:4321
 
-## ğŸ§ Commands
+## Construcción
 
-All commands are run from the root of the project, from a terminal:
+`ash
+npm run build
+`
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Vista previa
 
-## ğŸ‘€ Want to learn more?
+`ash
+npm run preview
+`
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## Estructura del proyecto
+
+`
+src/
++-- components/     # Componentes Astro
++-- data/          # Configuración del sitio
++-- layouts/       # Plantillas
++-- pages/         # Páginas
++-- styles/        # Estilos globales
+
+public/
++-- images/        # Imágenes
++-- videos/        # Videos
+`
+
+## Configuración
+
+Edita src/data/site.ts para actualizar:
+- Nombre de la empresa
+- Información de contacto (teléfono, email, dirección)
+- Redes sociales
+
+## Recursos necesarios
+
+### Video Hero
+Coloca un video de paneles solares en public/videos/solar-hero.mp4. Ver public/videos/README.md para más detalles.
+
+### Imágenes
+Coloca las imágenes en public/images/. Ver public/images/README.md para más detalles.
+
+## Notas importantes
+
+- El formulario de contacto no está conectado a un backend. Requiere configuración de un servicio de formularios.
+- Las imágenes de proyectos son ilustrativas.
+- No se han incluido datos reales de contacto (configurables en src/data/site.ts).

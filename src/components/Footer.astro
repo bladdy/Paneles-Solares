@@ -1,0 +1,118 @@
+---
+import { siteConfig, navLinks } from '../data/site';
+import { Astro } from 'astro';
+const currentYear = new Date().getFullYear();
+const pathname = Astro.url.pathname;
+const isCotizacionPage = pathname.includes('solicitar-cotizacion');
+const homeHref = isCotizacionPage ? '/' : '#inicio';
+---
+
+<footer class="bg-forest text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <!-- Company Info -->
+      <div class="lg:col-span-2">
+        <div class="flex items-center space-x-2 mb-4">
+          <div class="w-10 h-10 bg-solar rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-forest" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z" />
+            </svg>
+          </div>
+          <span class="text-xl font-display font-bold">{siteConfig.name}</span>
+        </div>
+        <p class="text-white/80 mb-6 max-w-md">
+          {siteConfig.description}
+        </p>
+      </div>
+      
+      <!-- Navigation -->
+      <div>
+        <h3 class="text-lg font-semibold mb-4">Navegación</h3>
+        <ul class="space-y-2">
+          {navLinks.map((link) => {
+              const linkHref = link.name === 'Inicio' ? homeHref : link.href;
+              return (
+                <li>
+                  <a
+                    href={linkHref}
+                    class="text-white/80 hover:text-solar transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-solar focus-visible:outline-offset-2 rounded"
+                  >
+                    {link.name}
+                  </a>
+                </li>
+              );
+            })}
+        </ul>
+      </div>
+      
+      <!-- Services -->
+      <div>
+        <h3 class="text-lg font-semibold mb-4">Servicios</h3>
+        <ul class="space-y-2">
+          <li>
+            <a href="#soluciones" class="text-white/80 hover:text-solar transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-solar focus-visible:outline-offset-2 rounded">
+              Paneles solares residenciales
+            </a>
+          </li>
+          <li>
+            <a href="#soluciones" class="text-white/80 hover:text-solar transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-solar focus-visible:outline-offset-2 rounded">
+              Soluciones comerciales e industriales
+            </a>
+          </li>
+          <li>
+            <a href="#soluciones" class="text-white/80 hover:text-solar transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-solar focus-visible:outline-offset-2 rounded">
+              Sistemas de respaldo e inversores
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Contact Info -->
+    <div class="mt-8 pt-8 border-t border-white/20">
+      <h3 class="text-lg font-semibold mb-4">Contacto</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-white/80">
+        {siteConfig.contact.phone && (
+          <div class="flex items-center space-x-2">
+            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+            </svg>
+            <span>{siteConfig.contact.phone}</span>
+          </div>
+        )}
+        {siteConfig.contact.email && (
+          <div class="flex items-center space-x-2">
+            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            <span>{siteConfig.contact.email}</span>
+          </div>
+        )}
+        {siteConfig.contact.address && (
+          <div class="flex items-center space-x-2">
+            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span>{siteConfig.contact.address}</span>
+          </div>
+        )}
+      </div>
+      {!siteConfig.contact.phone && !siteConfig.contact.email && !siteConfig.contact.address && (
+        <p class="text-white/60 text-sm italic">Datos de contacto configurables en src/data/site.ts</p>
+      )}
+    </div>
+    
+    <!-- Bottom -->
+    <div class="mt-8 pt-8 border-t border-white/20 flex flex-col sm:flex-row justify-between items-center">
+      <p class="text-white/80 text-sm">
+        &copy; {currentYear} {siteConfig.name}. Todos los derechos reservados.
+      </p>
+      <div class="mt-4 sm:mt-0">
+        <a href="#privacy" class="text-white/80 hover:text-solar text-sm transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-solar focus-visible:outline-offset-2 rounded">
+          Aviso de privacidad
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
