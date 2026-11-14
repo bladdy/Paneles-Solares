@@ -1,0 +1,236 @@
+import type { ProjectType, SolarConfig } from '../types/solar';
+
+export const PROJECT_TYPE_OPTIONS: Array<{
+  value: ProjectType;
+  label: string;
+  short: string;
+  description: string;
+}> = [
+  {
+    value: 'residencial',
+    label: 'Residencial',
+    short: 'Hogar',
+    description: 'Sistemas para casas y departamentos con consumo doméstico.',
+  },
+  {
+    value: 'comercial',
+    label: 'Comercial',
+    short: 'Negocio',
+    description: 'Oficinas, locales, hoteles y comercios con consumo diurno.',
+  },
+  {
+    value: 'industrial',
+    label: 'Industrial',
+    short: 'Industria',
+    description: 'Naves, plantas y operaciones con alta demanda eléctrica.',
+  },
+  {
+    value: 'respaldo',
+    label: 'Sistema con respaldo',
+    short: 'Respaldo',
+    description: 'Energía continua para equipos críticos con baterías.',
+  },
+];
+
+export const DEFAULT_CONFIG: SolarConfig = {
+  general: {
+    peakSunHours: 5.2,
+    performanceRatio: 0.8,
+    coverageTarget: 100,
+    safetyMargin: 10,
+    currency: 'MXN',
+    taxPercent: 16,
+    defaultTariff: 3.2,
+  },
+  panels: [
+    {
+      id: 'pnl-550',
+      brand: 'Jinko Solar',
+      model: 'Tiger Neo 550W',
+      watt: 550,
+      price: 4200,
+      efficiency: 21.3,
+      active: true,
+    },
+    {
+      id: 'pnl-580',
+      brand: 'LONGi',
+      model: 'Hi-MO 6 580W',
+      watt: 580,
+      price: 4550,
+      efficiency: 22.5,
+      active: true,
+    },
+    {
+      id: 'pnl-450',
+      brand: 'Trina Solar',
+      model: 'Vertex S+ 450W',
+      watt: 450,
+      price: 3400,
+      efficiency: 21.8,
+      active: true,
+    },
+    {
+      id: 'pnl-600',
+      brand: 'Canadian Solar',
+      model: 'TOPHiKu6 600W',
+      watt: 600,
+      price: 4900,
+      efficiency: 22.8,
+      active: false,
+    },
+  ],
+  inverters: [
+    {
+      id: 'inv-3',
+      brand: 'Growatt',
+      model: 'MIN 3000TL-X',
+      capacityKw: 3,
+      price: 18500,
+      type: 'string',
+      active: true,
+    },
+    {
+      id: 'inv-6',
+      brand: 'Huawei',
+      model: 'SUN2000-6KTL-L1',
+      capacityKw: 6,
+      price: 32000,
+      type: 'hibrido',
+      active: true,
+    },
+    {
+      id: 'inv-10',
+      brand: 'Fronius',
+      model: 'Symo 10.0-3-M',
+      capacityKw: 10,
+      price: 48000,
+      type: 'string',
+      active: true,
+    },
+    {
+      id: 'inv-12',
+      brand: 'Deye',
+      model: 'SUN-12K-SG04LP3',
+      capacityKw: 12,
+      price: 78000,
+      type: 'hibrido',
+      active: true,
+    },
+    {
+      id: 'inv-50',
+      brand: 'Sungrow',
+      model: 'SG50CX',
+      capacityKw: 50,
+      price: 145000,
+      type: 'string',
+      active: true,
+    },
+    {
+      id: 'inv-100',
+      brand: 'Huawei',
+      model: 'SUN2000-100KTL-M1',
+      capacityKw: 100,
+      price: 260000,
+      type: 'string',
+      active: true,
+    },
+    {
+      id: 'inv-125',
+      brand: 'Sungrow',
+      model: 'SG125CX-P2',
+      capacityKw: 125,
+      price: 320000,
+      type: 'string',
+      active: true,
+    },
+  ],
+  batteries: [
+    {
+      id: 'bat-2-5',
+      brand: 'Growatt',
+      model: 'ARK 2.5H-A1',
+      capacityKwh: 2.56,
+      price: 24000,
+      type: 'litio',
+      active: true,
+    },
+    {
+      id: 'bat-4-8',
+      brand: 'Pylontech',
+      model: 'US5000',
+      capacityKwh: 4.8,
+      price: 42000,
+      type: 'litio',
+      active: true,
+    },
+    {
+      id: 'bat-10',
+      brand: 'BYD',
+      model: 'Battery-Box HVS 10.2',
+      capacityKwh: 10.24,
+      price: 95000,
+      type: 'litio',
+      active: true,
+    },
+    {
+      id: 'bat-agm',
+      brand: 'Trojan',
+      model: 'Solar AGM 2.4 kWh',
+      capacityKwh: 2.4,
+      price: 18000,
+      type: 'agm',
+      active: false,
+    },
+  ],
+  installation: {
+    laborPerKwp: 2500,
+    structurePerKwp: 1800,
+    wiringPerKwp: 900,
+    protections: 6500,
+    installationBase: 4500,
+    transport: 3500,
+    other: 2000,
+  },
+  pricing: {
+    usePricePerWatt: false,
+    pricePerWatt: 21,
+    marginPercent: 22,
+    discountPercent: 0,
+    taxPercent: 16,
+  },
+  projectTypes: {
+    residencial: {
+      coverageTarget: 100,
+      safetyMargin: 10,
+      preferredPanelId: 'pnl-550',
+      preferredInverterId: 'inv-6',
+      priceMultiplier: 1,
+    },
+    comercial: {
+      coverageTarget: 100,
+      safetyMargin: 10,
+      preferredPanelId: 'pnl-580',
+      preferredInverterId: 'inv-12',
+      priceMultiplier: 1.02,
+    },
+    industrial: {
+      coverageTarget: 100,
+      safetyMargin: 8,
+      preferredPanelId: 'pnl-580',
+      preferredInverterId: 'inv-100',
+      priceMultiplier: 1.05,
+    },
+    respaldo: {
+      coverageTarget: 100,
+      safetyMargin: 12,
+      preferredPanelId: 'pnl-550',
+      preferredInverterId: 'inv-6',
+      priceMultiplier: 1.12,
+    },
+  },
+};
+
+export function createDefaultConfig(): SolarConfig {
+  return JSON.parse(JSON.stringify(DEFAULT_CONFIG)) as SolarConfig;
+}

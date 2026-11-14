@@ -1,151 +1,640 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
-import Navbar from '../components/Navbar.astro';
-import { siteConfig } from '../data/site';
+import { PROJECT_TYPE_OPTIONS } from '../data/cotizador-defaults';
 
-interface ProjectType {
-  value: string;
-  label: string;
-}
+const steps = [
+  { id: 1, label: 'Proyecto' },
+  { id: 2, label: 'Consumo' },
+  { id: 3, label: 'Inmueble' },
+  { id: 4, label: 'Estimación' },
+  { id: 5, label: 'Contacto' },
+  { id: 6, label: 'Envío' },
+];
 
-const projectTypes: ProjectType[] = [
-  { value: 'residencial', label: 'Residencial' },
-  { value: 'comercial', label: 'Comercial' },
-  { value: 'industrial', label: 'Industrial' },
-  { value: 'backup', label: 'Sistema con respaldo' },
+const systemTypes = [
+  {
+    value: 'interconectado',
+    label: 'Interconectado',
+    description: 'Se conecta a la red eléctrica y reduce tu factura sin baterías.',
+    icon: 'grid',
+  },
+  {
+    value: 'baterias',
+    label: 'Con baterías',
+    description: 'Respaldo de energía ante cortes y mayor independencia.',
+    icon: 'battery',
+  },
+  {
+    value: 'hibrido',
+    label: 'Híbrido',
+    description: 'Combina la red con baterías para maximizar el autoconsumo.',
+    icon: 'zap',
+  },
+];
+
+const propertyTypes = [
+  'Casa habitación',
+  'Departamento',
+  'Oficina',
+  'Local comercial',
+  'Nave industrial',
+  'Planta o bodega',
+  'Otro',
+];
+
+const roofTypes = [
+  'Losa de concreto',
+  'Lámina galvanizada',
+  'Teja',
+  'Estructura metálica',
+  'Suelo / terreno',
+  'No estoy seguro',
+];
+
+const orientations = ['Norte', 'Sur', 'Oriente', 'Poniente', 'No estoy seguro'];
+
+const trustPoints = [
+  'Estimación inmediata con parámetros reales de operación',
+  'Sin compromiso y sin costo',
+  'Un asesor valida el dimensionamiento en sitio',
+  'Acompañamiento de principio a fin',
 ];
 ---
 
-<MainLayout title="Solicitar Cotización Solar" description="Solicite una cotización solar personalizada para su hogar o empresa">
-  <Navbar />
-<section class="relative flex items-center overflow-hidden pt-20">
-      <div class="max-w-2xl mx-auto">
-        <form class="space-y-8 pt-6 pb-6" novalidate>
-        
-        <!-- Type of Project -->
-        <div>
-          <label class="block text-sm font-medium text-forest mb-2">
-            Tipo de proyecto
-          </label>
-          <select 
-            class="w-full px-4 py-3 rounded-xl border border-light-green bg-white text-forest font-medium focus-visible:outline-2 focus-visible:focus-ring-solar focus-visible:border-transparent transition-colors"
-            required
-          >
-            <option value="" disabled>Seleccione el tipo de proyecto</option>
-            {projectTypes.map((type) => (
-              <option value={type.value}>
-                {type.label}
-              </option>
+<MainLayout
+  title="Solicitar cotización solar | EnerSol"
+  description="Calcula una estimación preliminar de tu sistema solar en minutos. Comparte tu consumo eléctrico y recibe acompañamiento de un asesor EnerSol."
+>
+  <div class="min-h-screen bg-natural pt-20">
+    <section class="relative overflow-hidden bg-forest text-white">
+      <div class="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-solar/10 blur-3xl"></div>
+      <div class="pointer-events-none absolute -bottom-32 left-1/3 h-72 w-72 rounded-full bg-solar/5 blur-3xl"></div>
+      <div class="relative mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+        <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-solar">Cotizador solar</p>
+        <h1 class="mt-2 max-w-3xl font-display text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl lg:text-[42px]">
+          Diseña tu sistema solar en 6 pasos
+        </h1>
+        <p class="mt-3 max-w-2xl text-sm leading-relaxed text-white/75 sm:text-base">
+          Cuéntanos cuánta energía consumes y te mostraremos una estimación preliminar de capacidad, inversión y ahorro.
+          Al final, un asesor de EnerSol revisa tu caso contigo.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-2">
+          <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-medium text-white/85">
+            <span class="h-1.5 w-1.5 rounded-full bg-solar"></span> Estimación en minutos
+          </span>
+          <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-medium text-white/85">
+            <span class="h-1.5 w-1.5 rounded-full bg-solar"></span> Sin compromiso
+          </span>
+          <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-medium text-white/85">
+            <span class="h-1.5 w-1.5 rounded-full bg-solar"></span> Validación técnica incluida
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <div id="quote-wizard" class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+      <div class="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <div class="min-w-0">
+          <ol id="wizard-steps" class="flex gap-2 overflow-x-auto pb-2" aria-label="Pasos del cotizador">
+            {steps.map((step) => (
+              <li
+                data-indicator={step.id}
+                class="flex shrink-0 items-center gap-2 rounded-full border border-light-green bg-white px-3 py-1.5 text-xs font-semibold text-muted"
+              >
+                <span class="flex h-5 w-5 items-center justify-center rounded-full bg-natural text-[10px] font-bold" data-indicator-number>
+                  {step.id}
+                </span>
+                <span class="whitespace-nowrap">{step.label}</span>
+              </li>
             ))}
-          </select>
+          </ol>
+
+          <form id="quote-form" class="mt-4" novalidate>
+            <div class="rounded-2xl border border-line bg-white p-5 shadow-[0_1px_2px_rgba(16,24,40,0.04)] sm:p-7">
+              <!-- Paso 1 -->
+              <fieldset data-step="1" class="space-y-6">
+                <legend class="sr-only">Tipo de proyecto</legend>
+                <div>
+                  <h2 class="font-display text-xl font-extrabold tracking-tight text-forest">¿Qué proyecto quieres cotizar?</h2>
+                  <p class="mt-1 text-sm text-muted">Elige el tipo de instalación y cómo quieres que funcione tu sistema.</p>
+                </div>
+
+                <div>
+                  <p class="mb-2.5 text-sm font-semibold text-charcoal">Tipo de proyecto</p>
+                  <div class="grid grid-cols-2 gap-3">
+                    {PROJECT_TYPE_OPTIONS.map((option, index) => (
+                      <label class="group cursor-pointer">
+                        <input
+                          type="radio"
+                          name="projectType"
+                          value={option.value}
+                          class="peer sr-only"
+                          checked={index === 0}
+                        />
+                        <span class="flex h-full flex-col gap-1.5 rounded-xl border-2 border-line bg-white p-3.5 transition-colors group-hover:border-forest/30 peer-checked:border-forest peer-checked:bg-light-green/40 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-solar sm:p-4">
+                          <span class="text-sm font-bold text-forest">{option.label}</span>
+                          <span class="text-xs leading-relaxed text-muted">{option.short} · {option.description}</span>
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <p class="mb-2.5 text-sm font-semibold text-charcoal">Configuración del sistema</p>
+                  <div class="grid gap-3 sm:grid-cols-3">
+                    {systemTypes.map((option, index) => (
+                      <label class="group cursor-pointer">
+                        <input
+                          type="radio"
+                          name="systemType"
+                          value={option.value}
+                          class="peer sr-only"
+                          checked={index === 0}
+                        />
+                        <span class="flex h-full flex-col gap-1.5 rounded-xl border-2 border-line bg-white p-3.5 transition-colors group-hover:border-forest/30 peer-checked:border-forest peer-checked:bg-solar-soft/60 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-solar">
+                          <span class="flex items-center gap-2 text-sm font-bold text-forest">
+                            <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-light-green text-forest peer-checked:bg-solar">
+                              {option.icon === 'grid' && (
+                                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v16H4zM10 4v16M15 4v16" />
+                                </svg>
+                              )}
+                              {option.icon === 'battery' && (
+                                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 7H3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM23 11v2M6 11v2M10 11v2" />
+                                </svg>
+                              )}
+                              {option.icon === 'zap' && (
+                                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M13 2 3 14h9l-1 8 10-12h-9z" />
+                                </svg>
+                              )}
+                            </span>
+                            {option.label}
+                          </span>
+                          <span class="text-xs leading-relaxed text-muted">{option.description}</span>
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <p data-step-error="1" class="hidden rounded-lg border border-danger/20 bg-danger-soft/60 p-3 text-xs font-medium text-danger"></p>
+              </fieldset>
+
+              <!-- Paso 2 -->
+              <fieldset data-step="2" class="space-y-6" hidden>
+                <legend class="sr-only">Consumo eléctrico</legend>
+                <div>
+                  <h2 class="font-display text-xl font-extrabold tracking-tight text-forest">Tu consumo eléctrico</h2>
+                  <p class="mt-1 text-sm text-muted">
+                    Puedes capturarlo por mes o por bimestre, como aparece en tu recibo de CFE. Los dos campos se sincronizan.
+                  </p>
+                </div>
+
+                <div class="grid gap-4 sm:grid-cols-2">
+                  <div class="rounded-xl border border-line bg-natural/40 p-4">
+                    <label class="mb-1.5 block text-sm font-semibold text-charcoal" for="consumption-monthly">Consumo mensual</label>
+                    <div class="relative">
+                      <input
+                        id="consumption-monthly"
+                        type="number"
+                        min="1"
+                        max="200000"
+                        step="1"
+                        inputmode="decimal"
+                        class="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 pr-14 text-base font-semibold text-forest transition-colors focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/15"
+                        placeholder="Ej. 450"
+                        value="450"
+                      />
+                      <span class="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-semibold text-muted">kWh</span>
+                    </div>
+                    <p class="mt-1.5 text-xs text-muted">Promedio de un mes.</p>
+                  </div>
+
+                  <div class="rounded-xl border border-line bg-natural/40 p-4">
+                    <label class="mb-1.5 block text-sm font-semibold text-charcoal" for="consumption-bimonthly">Consumo bimestral</label>
+                    <div class="relative">
+                      <input
+                        id="consumption-bimonthly"
+                        type="number"
+                        min="2"
+                        max="400000"
+                        step="1"
+                        inputmode="decimal"
+                        class="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 pr-14 text-base font-semibold text-forest transition-colors focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/15"
+                        placeholder="Ej. 900"
+                        value="900"
+                      />
+                      <span class="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-semibold text-muted">kWh</span>
+                    </div>
+                    <p class="mt-1.5 text-xs text-muted">Dos meses de consumo.</p>
+                  </div>
+                </div>
+
+                <p id="consumption-hint" class="rounded-xl border border-info/20 bg-info-soft/50 p-3 text-xs leading-relaxed text-charcoal/80">
+                  Consejo: revisa el apartado de consumo del último recibo. Si no lo tienes, divide el total bimestral entre dos.
+                </p>
+
+                <div class="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label class="mb-1.5 block text-sm font-semibold text-charcoal" for="bill-amount">
+                      Monto del recibo <span class="font-normal text-muted">(opcional)</span>
+                    </label>
+                    <div class="relative">
+                      <span class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-sm text-muted">$</span>
+                      <input
+                        id="bill-amount"
+                        type="number"
+                        min="0"
+                        step="1"
+                        inputmode="decimal"
+                        class="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 pl-8 text-sm text-charcoal transition-colors focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/15"
+                        placeholder="Ej. 1,800"
+                      />
+                    </div>
+                    <p class="mt-1.5 text-xs text-muted">Nos ayuda a estimar tu tarifa efectiva.</p>
+                  </div>
+                  <div>
+                    <label class="mb-1.5 block text-sm font-semibold text-charcoal" for="tariff">
+                      Tarifa por kWh <span class="font-normal text-muted">(opcional)</span>
+                    </label>
+                    <div class="relative">
+                      <input
+                        id="tariff"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        inputmode="decimal"
+                        class="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 pr-14 text-sm text-charcoal transition-colors focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/15"
+                        placeholder="Ej. 3.20"
+                      />
+                      <span class="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-muted">/kWh</span>
+                    </div>
+                    <p id="tariff-hint" class="mt-1.5 text-xs text-muted">Si la dejas vacía usamos la tarifa de referencia.</p>
+                  </div>
+                </div>
+
+                <p data-step-error="2" class="hidden rounded-lg border border-danger/20 bg-danger-soft/60 p-3 text-xs font-medium text-danger"></p>
+              </fieldset>
+
+              <!-- Paso 3 -->
+              <fieldset data-step="3" class="space-y-6" hidden>
+                <legend class="sr-only">Datos del inmueble</legend>
+                <div>
+                  <h2 class="font-display text-xl font-extrabold tracking-tight text-forest">Datos del inmueble</h2>
+                  <p class="mt-1 text-sm text-muted">Con esta información validamos el espacio disponible y el tipo de instalación.</p>
+                </div>
+
+                <div class="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label class="mb-1.5 block text-sm font-semibold text-charcoal" for="property-type">Tipo de propiedad *</label>
+                    <select id="property-type" class="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-charcoal transition-colors focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/15">
+                      <option value="">Selecciona una opción</option>
+                      {propertyTypes.map((type) => <option value={type}>{type}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label class="mb-1.5 block text-sm font-semibold text-charcoal" for="roof-type">Tipo de techo</label>
+                    <select id="roof-type" class="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-charcoal transition-colors focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/15">
+                      <option value="">Selecciona una opción</option>
+                      {roofTypes.map((type) => <option value={type}>{type}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label class="mb-1.5 block text-sm font-semibold text-charcoal" for="roof-area">
+                      Área disponible <span class="font-normal text-muted">(opcional)</span>
+                    </label>
+                    <div class="relative">
+                      <input
+                        id="roof-area"
+                        type="number"
+                        min="1"
+                        step="1"
+                        inputmode="decimal"
+                        class="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 pr-12 text-sm text-charcoal transition-colors focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/15"
+                        placeholder="Ej. 40"
+                      />
+                      <span class="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-muted">m²</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="mb-1.5 block text-sm font-semibold text-charcoal" for="orientation">Orientación del techo</label>
+                    <select id="orientation" class="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-charcoal transition-colors focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/15">
+                      <option value="">Selecciona una opción</option>
+                      {orientations.map((orientation) => <option value={orientation}>{orientation}</option>)}
+                    </select>
+                  </div>
+                </div>
+
+                <div id="backup-fields" class="rounded-xl border border-solar/30 bg-solar-soft/40 p-4">
+                  <div class="flex items-start gap-2.5">
+                    <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-solar text-forest">
+                      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 7H3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM23 11v2M6 11v2M10 11v2" />
+                      </svg>
+                    </span>
+                    <div>
+                      <p class="text-sm font-semibold text-charcoal">Respaldo con baterías</p>
+                      <p class="mt-0.5 text-xs leading-relaxed text-charcoal/70">
+                        Indícanos qué necesitas mantener encendido durante un corte para dimensionar el banco de baterías.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="mt-4 grid gap-3 sm:grid-cols-2">
+                    <div>
+                      <label class="mb-1.5 block text-xs font-semibold text-charcoal" for="backup-hours">Horas de respaldo</label>
+                      <input
+                        id="backup-hours"
+                        type="number"
+                        min="1"
+                        max="72"
+                        step="1"
+                        class="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-charcoal transition-colors focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/15"
+                        value="4"
+                      />
+                    </div>
+                    <div>
+                      <label class="mb-1.5 block text-xs font-semibold text-charcoal" for="backup-load">
+                        Carga crítica <span class="font-normal text-muted">(kW, opcional)</span>
+                      </label>
+                      <input
+                        id="backup-load"
+                        type="number"
+                        min="0"
+                        step="0.1"
+                        class="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-charcoal transition-colors focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/15"
+                        placeholder="Ej. 2.5"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="mb-1.5 block text-sm font-semibold text-charcoal" for="property-notes">
+                    Comentarios adicionales <span class="font-normal text-muted">(opcional)</span>
+                  </label>
+                  <textarea
+                    id="property-notes"
+                    rows="3"
+                    class="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-charcoal transition-colors focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/15"
+                    placeholder="¿Hay sombra, varios techos, requerimientos especiales?"
+                  ></textarea>
+                </div>
+
+                <p data-step-error="3" class="hidden rounded-lg border border-danger/20 bg-danger-soft/60 p-3 text-xs font-medium text-danger"></p>
+              </fieldset>
+
+              <!-- Paso 4 -->
+              <fieldset data-step="4" class="space-y-5" hidden>
+                <legend class="sr-only">Estimación preliminar</legend>
+                <div>
+                  <div class="flex flex-wrap items-center gap-2">
+                    <h2 class="font-display text-xl font-extrabold tracking-tight text-forest">Tu estimación preliminar</h2>
+                    <span class="inline-flex items-center gap-1.5 rounded-full border border-warning/25 bg-warning-soft px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-warning">
+                      Preliminar
+                    </span>
+                  </div>
+                  <p class="mt-1 text-sm text-muted">
+                    Calculada con la configuración vigente de EnerSol para tu consumo y tipo de proyecto.
+                  </p>
+                </div>
+                <div id="estimate-content">
+                  <div class="space-y-3">
+                    <div class="h-8 w-40 animate-pulse rounded bg-slate-100"></div>
+                    <div class="grid gap-3 sm:grid-cols-2">
+                      {Array.from({ length: 4 }).map(() => (
+                        <div class="h-16 w-full animate-pulse rounded-xl bg-slate-100"></div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <p class="flex items-start gap-2 rounded-xl border border-line bg-natural/60 p-3 text-xs leading-relaxed text-muted">
+                  <svg class="mt-0.5 h-4 w-4 shrink-0 text-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 16v-4M12 8h.01" />
+                  </svg>
+                  <span>
+                    Esta estimación es informativa y no constituye una cotización formal. Un ingeniero de EnerSol validará el
+                    dimensionamiento, la estructura y las condiciones del sitio antes de confirmar precios y tiempos.
+                  </span>
+                </p>
+              </fieldset>
+
+              <!-- Paso 5 -->
+              <fieldset data-step="5" class="space-y-6" hidden>
+                <legend class="sr-only">Datos de contacto</legend>
+                <div>
+                  <h2 class="font-display text-xl font-extrabold tracking-tight text-forest">¿Con quién nos ponemos en contacto?</h2>
+                  <p class="mt-1 text-sm text-muted">Usaremos estos datos solo para dar seguimiento a tu solicitud.</p>
+                </div>
+
+                <div class="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label class="mb-1.5 block text-sm font-semibold text-charcoal" for="contact-name">Nombre completo *</label>
+                    <input
+                      id="contact-name"
+                      type="text"
+                      autocomplete="name"
+                      class="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-charcoal transition-colors focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/15"
+                      placeholder="Tu nombre"
+                    />
+                  </div>
+                  <div>
+                    <label class="mb-1.5 block text-sm font-semibold text-charcoal" for="contact-company">
+                      Empresa <span class="font-normal text-muted">(opcional)</span>
+                    </label>
+                    <input
+                      id="contact-company"
+                      type="text"
+                      autocomplete="organization"
+                      class="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-charcoal transition-colors focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/15"
+                      placeholder="Nombre de tu empresa"
+                    />
+                  </div>
+                  <div>
+                    <label class="mb-1.5 block text-sm font-semibold text-charcoal" for="contact-email">Correo electrónico *</label>
+                    <input
+                      id="contact-email"
+                      type="email"
+                      autocomplete="email"
+                      class="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-charcoal transition-colors focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/15"
+                      placeholder="tu@correo.com"
+                    />
+                  </div>
+                  <div>
+                    <label class="mb-1.5 block text-sm font-semibold text-charcoal" for="contact-phone">Teléfono *</label>
+                    <input
+                      id="contact-phone"
+                      type="tel"
+                      autocomplete="tel"
+                      class="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-charcoal transition-colors focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/15"
+                      placeholder="+52 55 1234 5678"
+                    />
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label class="mb-1.5 block text-sm font-semibold text-charcoal" for="contact-location">Ubicación de la instalación *</label>
+                    <input
+                      id="contact-location"
+                      type="text"
+                      autocomplete="address-level2"
+                      class="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-charcoal transition-colors focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/15"
+                      placeholder="Ciudad, estado o código postal"
+                    />
+                  </div>
+                </div>
+
+                <p data-step-error="5" class="hidden rounded-lg border border-danger/20 bg-danger-soft/60 p-3 text-xs font-medium text-danger"></p>
+              </fieldset>
+
+              <!-- Paso 6 -->
+              <fieldset data-step="6" class="space-y-6" hidden>
+                <legend class="sr-only">Resumen y envío</legend>
+                <div>
+                  <h2 class="font-display text-xl font-extrabold tracking-tight text-forest">Revisa y envía tu solicitud</h2>
+                  <p class="mt-1 text-sm text-muted">Verifica que todo esté correcto. Podrás ajustar cualquier dato antes de enviar.</p>
+                </div>
+
+                <div id="review-content" class="space-y-4"></div>
+
+                <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-natural/40 p-4">
+                  <input id="consent" type="checkbox" class="mt-0.5 h-4 w-4 rounded border-line accent-forest" />
+                  <span class="text-xs leading-relaxed text-charcoal/80">
+                    Acepto que EnerSol me contacte para dar seguimiento a esta solicitud y tratar mis datos conforme a su aviso de
+                    privacidad. No se realiza ningún cobro en este paso.
+                  </span>
+                </label>
+
+                <p data-step-error="6" class="hidden rounded-lg border border-danger/20 bg-danger-soft/60 p-3 text-xs font-medium text-danger"></p>
+              </fieldset>
+            </div>
+
+            <div class="mt-4 flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <button
+                type="button"
+                data-prev
+                class="inline-flex items-center justify-center gap-2 rounded-lg border border-line bg-white px-4 py-2.5 text-sm font-semibold text-charcoal transition-colors hover:bg-natural disabled:cursor-not-allowed disabled:opacity-40"
+                disabled
+              >
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                Anterior
+              </button>
+
+              <div class="flex items-center justify-between gap-3 sm:justify-end">
+                <p id="step-label" class="text-xs font-medium text-muted">Paso 1 de 6</p>
+                <button
+                  type="button"
+                  data-next
+                  class="inline-flex items-center justify-center gap-2 rounded-lg bg-forest px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-forest-light"
+                >
+                  Continuar
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </button>
+                <button
+                  type="submit"
+                  data-submit
+                  class="inline-flex items-center justify-center gap-2 rounded-lg bg-solar px-5 py-2.5 text-sm font-bold text-forest transition-colors hover:bg-solar/90 disabled:cursor-not-allowed disabled:opacity-60"
+                  hidden
+                >
+                  Enviar solicitud
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M22 2 11 13M22 2l-7 20-4-9-9-4z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <p class="mt-3 text-center text-[11px] leading-relaxed text-muted">
+              Demostración: la solicitud se guarda únicamente en el almacenamiento local de este navegador. No se envían correos.
+            </p>
+          </form>
         </div>
-        
-        <!-- Monthly Consumption (Watts) -->
-        <div>
-          <label class="block text-sm font-medium text-forest mb-2">
-            Consumo mensual (Watts)
-            <span class="text-charcoal/60 text-xs ml-2">Ej: 5000</span>
-          </label>
-          <input
-            type="number"
-            class="w-full px-4 py-3 rounded-xl border border-light-green bg-white text-forest font-medium focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-solar focus-visible:border-transparent transition-colors"
-            placeholder="Consumo mensual en Watts"
-            required
-            min="100"
-            max="50000"
-          />
-          <p class="text-charcoal/60 text-sm mt-1">
-            Tu consumo mensual en watios-hora (kWh) o la potencia máxima
-          </p>
+
+        <aside class="min-w-0 lg:sticky lg:top-24">
+          <div class="rounded-2xl border border-line bg-white p-5 shadow-[0_1px_2px_rgba(16,24,40,0.04)]">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-solar">Tu estimación</p>
+                <h2 class="mt-0.5 font-display text-lg font-extrabold tracking-tight text-forest">Resumen en vivo</h2>
+              </div>
+              <span class="rounded-full border border-line bg-natural px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-muted">Demo</span>
+            </div>
+
+            <div id="quote-summary" class="mt-4 space-y-3">
+              <div class="h-16 w-full animate-pulse rounded-xl bg-slate-100"></div>
+              <div class="h-9 w-full animate-pulse rounded-lg bg-slate-100"></div>
+              <div class="h-9 w-full animate-pulse rounded-lg bg-slate-100"></div>
+            </div>
+
+            <p class="mt-4 flex items-start gap-2 rounded-lg border border-line bg-natural/60 p-2.5 text-[11px] leading-relaxed text-muted">
+              <svg class="mt-0.5 h-3.5 w-3.5 shrink-0 text-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 16v-4M12 8h.01" />
+              </svg>
+              Estimación preliminar con parámetros de referencia. El precio final depende de la validación técnica en sitio.
+            </p>
+          </div>
+
+          <div class="mt-4 rounded-2xl border border-light-green bg-white p-5">
+            <h2 class="font-display text-base font-bold text-forest">¿Por qué cotizar con EnerSol?</h2>
+            <ul class="mt-3 space-y-2.5">
+              {trustPoints.map((point) => (
+                <li class="flex items-start gap-2.5 text-xs leading-relaxed text-charcoal/80">
+                  <span class="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-light-green text-forest">
+                    <svg class="h-2.5 w-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M20 6 9 17l-5-5" />
+                    </svg>
+                  </span>
+                  {point}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- Éxito -->
+    <section id="quote-success" class="mx-auto hidden max-w-3xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16" aria-live="polite">
+      <div class="rounded-3xl border border-light-green bg-white p-6 text-center shadow-sm sm:p-10">
+        <span class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-light-green text-forest">
+          <svg class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M22 11.08V12a10 10 0 1 1-5.93-9.14M22 4 12 14.01l-3-3" />
+          </svg>
+        </span>
+        <h2 class="mt-5 font-display text-2xl font-extrabold tracking-tight text-forest sm:text-3xl">¡Recibimos tu solicitud!</h2>
+        <p class="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-muted">
+          Un asesor de EnerSol revisará tu consumo y se pondrá en contacto contigo para validar el sistema y preparar tu
+          cotización formal.
+        </p>
+
+        <div class="mx-auto mt-6 max-w-md rounded-2xl border border-line bg-natural/50 p-4 text-left">
+          <p class="text-[11px] font-bold uppercase tracking-wider text-muted">Folio de seguimiento</p>
+          <p id="success-folio" class="mt-1 font-mono text-lg font-bold text-forest">—</p>
+          <div id="success-summary" class="mt-3 space-y-2 border-t border-line pt-3 text-xs text-charcoal/80"></div>
         </div>
-        
-        <!-- Bimonthly Consumption (Mexico context) -->
-        <div>
-          <label class="block text-sm font-medium text-forest mb-2">
-            Consumo bimestral (Mexico)
-            <span class="text-charcoal/60 text-xs ml-2">Ej: 15000</span>
-          </label>
-          <input
-            type="number"
-            class="w-full px-4 py-3 rounded-xl border border-light-green bg-white text-forest font-medium focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-solar focus-visible:border-transparent transition-colors"
-            placeholder="Consumo cada 2 meses en Watts"
-            required
-            min="100"
-            max="150000"
-          />
-          <p class="text-charcoal/60 text-sm mt-1">
-            En México las tarifas eléctricas son bimestrales, este dato ayuda
-          </p>
-          <p class="text-charcoal/60 text-sm mt-1">
-            a un cálculo más preciso de tu sistema necesario
-          </p>
-        </div>
-        
-        <!-- Contact Name -->
-        <div>
-          <label class="block text-sm font-medium text-forest mb-2">
-            Nombre completo
-          </label>
-          <input
-            type="text"
-            class="w-full px-4 py-3 rounded-xl border border-light-green bg-white text-forest font-medium focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-solar focus-visible:border-transparent transition-colors"
-            required
-            placeholder="Tu nombre completo"
-          />
-        </div>
-        
-        <!-- Email -->
-        <div>
-          <label class="block text-sm font-medium text-forest mb-2">
-            Correo electrónico
-          </label>
-          <input
-            type="email"
-            class="w-full px-4 py-3 rounded-xl border border-light-green bg-white text-forest font-medium focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-solar focus-visible:border-transparent transition-colors"
-            required
-            placeholder="tu@email.com"
-          />
-        </div>
-        
-        <!-- Phone -->
-        <div>
-          <label class="block text-sm font-medium text-forest mb-2">
-            Teléfono
-            <span class="text-charcoal/60 text-xs ml-2">Ej: +52 55 1234 5678</span>
-          </label>
-          <input
-            type="tel"
-            class="w-full px-4 py-3 rounded-xl border border-light-green bg-white text-forest font-medium focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-solar focus-visible:border-transparent transition-colors"
-            placeholder="+52 55 1234 5678"
-            required
-            pattern="[\d\s\+\(\)\-]{10,}"
-          />
-        </div>
-        
-        <!-- Property Type / Additional Comments -->
-        <div>
-          <label class="block text-sm font-medium text-forest mb-2">
-            Tipo de propiedad o comentarios adicionales
-            <span class="text-charcoal/60 text-xs ml-2">Opcional</span>
-          </label>
-          <textarea
-            rows="3"
-            class="w-full px-4 py-3 rounded-xl border border-light-green bg-white text-forest font-medium focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-solar focus-visible:border-transparent transition-colors"
-            placeholder="¿Casa, departamento, oficina? ¿Algún requisito especial?"
-          ></textarea>
-        </div>
-        
-        <!-- Submit Button -->
-        <div>
-          <button
-            type="submit"
-            class="w-full bg-solar text-forest py-4 rounded-lg font-semibold text-lg hover:bg-solar/90 transition-all duration-200 shadow-lg hover:shadow-xl focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2"
-          >
-            Enviar solicitud
+
+        <div class="mt-6 flex flex-col justify-center gap-2 sm:flex-row">
+          <a href="/" class="inline-flex items-center justify-center rounded-lg bg-forest px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-forest-light">
+            Volver al inicio
+          </a>
+          <button type="button" id="new-quote" class="inline-flex items-center justify-center rounded-lg border border-line bg-white px-5 py-2.5 text-sm font-semibold text-charcoal transition-colors hover:bg-natural">
+            Hacer otra solicitud
           </button>
         </div>
-        
-      </form>
+
+        <p class="mt-4 text-[11px] leading-relaxed text-muted">
+          Esta es una demostración: la solicitud quedó guardada en este navegador y ya aparece en el panel administrativo.
+        </p>
       </div>
-  </section>
+    </section>
+  </div>
+
+  <script>
+    import { initPublicQuote } from '../scripts/lib/cotizador';
+    initPublicQuote();
+  </script>
 </MainLayout>

@@ -1,0 +1,213 @@
+---
+import '../styles/admin.css';
+import AdminSidebar from '../components/admin/AdminSidebar.astro';
+import Icon from '../components/admin/Icon.astro';
+
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  title: string;
+  description?: string;
+  active?: string;
+  breadcrumbs?: Crumb[];
+}
+
+const {
+  title,
+  description = 'Panel administrativo de EnerSol. Prototipo funcional con datos simulados.',
+  active = '',
+  breadcrumbs = [],
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} · EnerSol Admin</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-natural">
+    <a
+      href="#admin-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-lg focus:bg-forest focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+    >
+      Saltar al contenido
+    </a>
+
+    <AdminSidebar active={active} />
+
+    <div id="admin-main" class="flex min-h-screen flex-col">
+      <header class="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur">
+        <div class="flex h-16 items-center gap-3 px-4 sm:px-6">
+          <button
+            type="button"
+            data-sidebar-toggle
+            aria-expanded="false"
+            aria-controls="admin-sidebar"
+            class="admin-icon-btn lg:hidden"
+          >
+            <span class="sr-only">Abrir menú</span>
+            <Icon name="menu" class="h-5 w-5" />
+          </button>
+
+          <nav aria-label="Ruta de navegación" class="hidden min-w-0 items-center gap-1.5 text-sm md:flex">
+            <a href="/admin/dashboard" class="text-muted transition-colors hover:text-forest">Admin</a>
+            {
+              breadcrumbs.map((crumb, index) => (
+                <>
+                  <Icon name="chevronRight" class="h-3.5 w-3.5 shrink-0 text-muted/60" />
+                  {crumb.href && index < breadcrumbs.length - 1 ? (
+                    <a href={crumb.href} class="truncate text-muted transition-colors hover:text-forest">
+                      {crumb.label}
+                    </a>
+                  ) : (
+                    <span class="truncate font-semibold text-forest" aria-current="page">
+                      {crumb.label}
+                    </span>
+                  )}
+                </>
+              ))
+            }
+          </nav>
+
+          <p class="truncate font-display text-sm font-bold text-forest md:hidden">{title}</p>
+
+          <div class="ml-auto flex items-center gap-1.5 sm:gap-2.5">
+            <span
+              class="hidden items-center gap-1.5 rounded-full border border-solar/40 bg-solar-soft px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-forest lg:inline-flex"
+              title="Los datos viven en tu navegador"
+            >
+              <span class="h-1.5 w-1.5 rounded-full bg-solar"></span>
+              Demo
+            </span>
+
+            <label class="hidden items-center gap-2 xl:flex">
+              <span class="text-xs font-medium text-muted">Rol:</span>
+              <select
+                id="role-switcher"
+                class="admin-select max-w-[240px] py-1.5 text-xs"
+                aria-label="Cambiar rol de demostración"
+              ></select>
+            </label>
+
+            <div class="relative">
+              <button
+                type="button"
+                data-notifications-button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="admin-icon-btn relative"
+              >
+                <span class="sr-only">Notificaciones</span>
+                <Icon name="bell" class="h-5 w-5" />
+                <span
+                  data-notifications-badge
+                  class="absolute -right-0.5 -top-0.5 hidden min-w-[18px] rounded-full bg-danger px-1 text-center text-[10px] font-bold leading-[18px] text-white"
+                ></span>
+              </button>
+              <div
+                data-notifications-panel
+                class="absolute right-0 top-full z-50 mt-2 hidden w-[calc(100vw-2rem)] max-w-sm overflow-hidden rounded-xl border border-line bg-white shadow-xl"
+                role="menu"
+              ></div>
+            </div>
+
+            <div class="relative">
+              <button
+                type="button"
+                data-user-menu-button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="flex items-center gap-2 rounded-lg p-1 pr-1.5 transition-colors hover:bg-natural focus-visible:outline-2 focus-visible:outline-solar focus-visible:outline-offset-2"
+              >
+                <span
+                  data-admin-user-avatar
+                  class="admin-avatar h-9 w-9 text-xs"
+                  style="background-color:#123B2A"
+                >
+                  <span data-admin-user-initials>AD</span>
+                </span>
+                <span class="hidden min-w-0 text-left sm:block">
+                  <span data-admin-user-name class="block max-w-[150px] truncate text-sm font-semibold leading-tight text-charcoal">
+                    Usuario
+                  </span>
+                  <span data-admin-role-name class="block max-w-[150px] truncate text-[11px] leading-tight text-muted">
+                    Cargando…
+                  </span>
+                </span>
+                <Icon name="chevronDown" class="hidden h-4 w-4 text-muted sm:block" />
+              </button>
+              <div
+                data-user-menu
+                class="absolute right-0 top-full z-50 mt-2 hidden w-64 overflow-hidden rounded-xl border border-line bg-white shadow-xl"
+                role="menu"
+              >
+                <div class="border-b border-line px-4 py-3">
+                  <p data-admin-user-name class="text-sm font-semibold text-charcoal">Usuario</p>
+                  <p data-admin-user-job class="mt-0.5 text-xs text-muted">Colaborador</p>
+                </div>
+                <div class="p-1.5">
+                  <a
+                    href="/admin/configuracion"
+                    class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-charcoal transition-colors hover:bg-natural"
+                    role="menuitem"
+                  >
+                    <Icon name="settings" class="h-4 w-4 text-muted" />
+                    Configuración
+                  </a>
+                  <a
+                    href="/"
+                    class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-charcoal transition-colors hover:bg-natural"
+                    role="menuitem"
+                  >
+                    <Icon name="external" class="h-4 w-4 text-muted" />
+                    Ver sitio público
+                  </a>
+                  <div class="my-1 h-px bg-line"></div>
+                  <button
+                    type="button"
+                    data-admin-logout
+                    class="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-danger transition-colors hover:bg-danger-soft"
+                    role="menuitem"
+                  >
+                    <Icon name="logout" class="h-4 w-4" />
+                    Cerrar sesión
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main id="admin-content" class="flex-1 px-4 py-6 sm:px-6 lg:px-8">
+        <slot />
+      </main>
+    </div>
+
+    <div id="overlay-root"></div>
+    <div
+      id="toast-root"
+      class="pointer-events-none fixed bottom-4 right-4 z-[120] flex w-[calc(100%-2rem)] max-w-sm flex-col gap-2"
+    ></div>
+
+    <script>
+      import { initAdminShell } from '../scripts/admin/shell';
+      initAdminShell();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+---
+import '../../styles/admin.css';
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Panel administrativo · EnerSol</title>
+    <noscript><meta http-equiv="refresh" content="0; url=/admin/login" /></noscript>
+  </head>
+  <body class="flex min-h-screen items-center justify-center bg-natural">
+    <div class="text-center">
+      <div class="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-light-green border-t-forest"></div>
+      <p class="mt-4 text-sm font-medium text-muted">Cargando panel administrativo…</p>
+      <p class="mt-2 text-xs text-muted">
+        Si no eres redirigido, entra a
+        <a class="admin-link" href="/admin/login">/admin/login</a>.
+      </p>
+    </div>
+    <script>
+      import { getSession } from '../../services/store';
+      window.location.replace(getSession() ? '/admin/dashboard' : '/admin/login');
+    </script>
+  </body>
+</html>

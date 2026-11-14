@@ -1,0 +1,107 @@
+---
+import '../styles/admin.css';
+import Icon from '../components/admin/Icon.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Acceso al panel administrativo de EnerSol.' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} · EnerSol Admin</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="min-h-screen bg-natural">
+    <div class="grid min-h-screen lg:grid-cols-[1.05fr_1fr]">
+      <aside class="relative hidden overflow-hidden bg-forest p-10 text-white lg:flex lg:flex-col">
+        <div
+          class="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full opacity-20"
+          style="background: radial-gradient(circle, #F5B82E 0%, transparent 68%)"
+        ></div>
+        <div
+          class="pointer-events-none absolute -bottom-32 -left-20 h-96 w-96 rounded-full opacity-10"
+          style="background: radial-gradient(circle, #DCE9DF 0%, transparent 65%)"
+        ></div>
+
+        <a href="/" class="relative flex items-center gap-3">
+          <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-solar text-forest">
+            <Icon name="sun" class="h-6 w-6" strokeWidth={2} />
+          </span>
+          <span class="font-display text-2xl font-extrabold tracking-tight">EnerSol</span>
+        </a>
+
+        <div class="relative my-auto max-w-md py-16">
+          <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-semibold text-solar">
+            <Icon name="sparkles" class="h-3.5 w-3.5" />
+            Plataforma administrativa · Demo
+          </span>
+          <h1 class="mt-5 font-display text-4xl font-extrabold leading-[1.1] tracking-tight">
+            Todo el ciclo de tu proyecto solar, en un solo lugar.
+          </h1>
+          <p class="mt-4 text-base leading-relaxed text-white/65">
+            Da seguimiento a solicitudes, cotizaciones, proyectos, tareas y equipo de instalación
+            desde un panel claro y operativo.
+          </p>
+
+          <ul class="mt-9 space-y-4">
+            {
+              [
+                ['file', 'Solicitudes y cotizaciones', 'Del primer contacto a la propuesta enviada.'],
+                ['kanban', 'Proyectos y tareas', 'Tablero Kanban con avance por etapa.'],
+                ['shieldCheck', 'Roles y permisos', 'Simula el acceso de cada perfil del equipo.'],
+              ].map(([iconName, titleText, description]) => (
+                <li class="flex gap-3">
+                  <span class="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/10 text-solar">
+                    <Icon name={iconName as 'file'} class="h-4.5 w-4.5" />
+                  </span>
+                  <div>
+                    <p class="text-sm font-semibold">{titleText}</p>
+                    <p class="text-xs leading-relaxed text-white/55">{description}</p>
+                  </div>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <p class="relative text-xs text-white/40">
+          © {new Date().getFullYear()} EnerSol. Prototipo con datos simulados, sin backend.
+        </p>
+      </aside>
+
+      <main class="flex min-h-screen items-center justify-center px-5 py-10 sm:px-8">
+        <div class="w-full max-w-md">
+          <div class="mb-8 flex items-center gap-2.5 lg:hidden">
+            <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-forest text-solar">
+              <Icon name="sun" class="h-5 w-5" strokeWidth={2} />
+            </span>
+            <span class="font-display text-xl font-bold text-forest">EnerSol</span>
+          </div>
+          <slot />
+        </div>
+      </main>
+    </div>
+
+    <div id="overlay-root"></div>
+    <div
+      id="toast-root"
+      class="pointer-events-none fixed bottom-4 right-4 z-[120] flex w-[calc(100%-2rem)] max-w-sm flex-col gap-2"
+    ></div>
+  </body>
+</html>

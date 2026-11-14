@@ -1,0 +1,187 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import PageHeader from '../../components/admin/PageHeader.astro';
+import Icon from '../../components/admin/Icon.astro';
+
+const today = new Intl.DateTimeFormat('es-MX', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+}).format(new Date());
+---
+
+<AdminLayout
+  title="Dashboard"
+  active="/admin/dashboard"
+  breadcrumbs={[{ label: 'Dashboard' }]}
+>
+  <PageHeader
+    eyebrow="Resumen operativo"
+    title="Dashboard"
+    subtitle="Estado de solicitudes, cotizaciones y proyectos de EnerSol en tiempo real simulado."
+  >
+    <span slot="actions" class="hidden items-center gap-2 rounded-lg border border-line bg-white px-3 py-2 text-xs font-medium capitalize text-muted sm:inline-flex">
+      <Icon name="calendar" class="h-4 w-4" />
+      {today}
+    </span>
+    <button slot="actions" type="button" id="dashboard-refresh" class="admin-btn admin-btn-secondary admin-btn-sm">
+      <Icon name="refresh" class="h-4 w-4" />
+      Actualizar
+    </button>
+    <a slot="actions" href="/admin/solicitudes?new=1" class="admin-btn admin-btn-primary admin-btn-sm">
+      <Icon name="plus" class="h-4 w-4" />
+      Nueva solicitud
+    </a>
+  </PageHeader>
+
+  <div id="dashboard-alerts" class="mb-6 hidden grid gap-3 sm:grid-cols-2"></div>
+
+  <section aria-label="Indicadores principales">
+    <div id="dashboard-kpis" class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      {Array.from({ length: 4 }).map(() => (
+        <div class="admin-kpi">
+          <div class="admin-skeleton h-10 w-10 rounded-xl"></div>
+          <div class="admin-skeleton mt-4 h-8 w-24"></div>
+          <div class="admin-skeleton mt-2 h-4 w-32"></div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <div class="mt-6 grid gap-4 xl:grid-cols-3">
+    <section class="admin-card xl:col-span-2" aria-labelledby="revenue-title">
+      <div class="admin-card-header">
+        <div>
+          <h2 id="revenue-title" class="admin-section-title">Ingresos por proyecto</h2>
+          <p class="admin-section-subtitle">Valor de proyectos agrupado por mes de inicio.</p>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <button type="button" data-chart-period="6" class="admin-chip admin-chip-active">6 meses</button>
+          <button type="button" data-chart-period="12" class="admin-chip">12 meses</button>
+        </div>
+      </div>
+      <div class="admin-card-body">
+        <div id="chart-revenue" class="admin-skeleton h-56 w-full"></div>
+      </div>
+    </section>
+
+    <section class="admin-card" aria-labelledby="status-title">
+      <div class="admin-card-header">
+        <div>
+          <h2 id="status-title" class="admin-section-title">Proyectos por etapa</h2>
+          <p class="admin-section-subtitle">Distribución actual del portafolio.</p>
+        </div>
+      </div>
+      <div class="admin-card-body">
+        <div id="chart-status" class="admin-skeleton h-56 w-full"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="mt-4 grid gap-4 xl:grid-cols-3">
+    <section class="admin-card xl:col-span-2" aria-labelledby="requests-title">
+      <div class="admin-card-header">
+        <div>
+          <h2 id="requests-title" class="admin-section-title">Solicitudes por mes</h2>
+          <p class="admin-section-subtitle">Volumen de solicitudes recibidas en el periodo.</p>
+        </div>
+        <a href="/admin/solicitudes" class="text-xs font-semibold text-forest hover:underline">Ver solicitudes</a>
+      </div>
+      <div class="admin-card-body">
+        <div id="chart-requests" class="admin-skeleton h-56 w-full"></div>
+      </div>
+    </section>
+
+    <section class="admin-card" aria-labelledby="outcomes-title">
+      <div class="admin-card-header">
+        <div>
+          <h2 id="outcomes-title" class="admin-section-title">Resultado de cotizaciones</h2>
+          <p class="admin-section-subtitle">Embudo comercial del periodo.</p>
+        </div>
+      </div>
+      <div class="admin-card-body">
+        <div id="chart-outcomes" class="admin-skeleton h-56 w-full"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="mt-4 grid gap-4 xl:grid-cols-3">
+    <section class="admin-card xl:col-span-2" aria-labelledby="recent-title">
+      <div class="admin-card-header">
+        <div>
+          <h2 id="recent-title" class="admin-section-title">Solicitudes recientes</h2>
+          <p class="admin-section-subtitle">Últimos ingresos del cotizador público y capturas manuales.</p>
+        </div>
+        <a href="/admin/solicitudes" class="admin-btn admin-btn-secondary admin-btn-sm">
+          Ver todas
+          <Icon name="arrowRight" class="h-3.5 w-3.5" />
+        </a>
+      </div>
+      <div id="dashboard-requests" class="p-0">
+        <div class="space-y-2 p-4">
+          {Array.from({ length: 4 }).map(() => (
+            <div class="admin-skeleton h-12 w-full"></div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="actividad" class="admin-card" aria-labelledby="activity-title">
+      <div class="admin-card-header">
+        <div>
+          <h2 id="activity-title" class="admin-section-title">Actividad reciente</h2>
+          <p class="admin-section-subtitle">Movimientos del equipo.</p>
+        </div>
+      </div>
+      <div id="dashboard-activity" class="admin-card-body">
+        <div class="space-y-2">
+          {Array.from({ length: 5 }).map(() => (
+            <div class="admin-skeleton h-10 w-full"></div>
+          ))}
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="mt-4 grid gap-4 xl:grid-cols-2">
+    <section class="admin-card" aria-labelledby="projects-title">
+      <div class="admin-card-header">
+        <div>
+          <h2 id="projects-title" class="admin-section-title">Avance de proyectos</h2>
+          <p class="admin-section-subtitle">Proyectos activos con mayor progreso.</p>
+        </div>
+        <a href="/admin/proyectos" class="text-xs font-semibold text-forest hover:underline">Ver tablero</a>
+      </div>
+      <div id="dashboard-projects" class="admin-card-body">
+        <div class="space-y-3">
+          {Array.from({ length: 3 }).map(() => (
+            <div class="admin-skeleton h-14 w-full"></div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="admin-card" aria-labelledby="tasks-title">
+      <div class="admin-card-header">
+        <div>
+          <h2 id="tasks-title" class="admin-section-title">Tareas próximas y vencidas</h2>
+          <p class="admin-section-subtitle">Vencimientos en los próximos 7 días.</p>
+        </div>
+        <a href="/admin/proyectos?vista=kanban" class="text-xs font-semibold text-forest hover:underline">Ver Kanban</a>
+      </div>
+      <div id="dashboard-tasks" class="px-3 py-2">
+        <div class="space-y-2 p-2">
+          {Array.from({ length: 3 }).map(() => (
+            <div class="admin-skeleton h-12 w-full"></div>
+          ))}
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    import { initDashboard } from '../../scripts/admin/dashboard';
+    initDashboard();
+  </script>
+</AdminLayout>

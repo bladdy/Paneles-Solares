@@ -1,0 +1,245 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import PageHeader from '../../../components/admin/PageHeader.astro';
+import Icon from '../../../components/admin/Icon.astro';
+---
+
+<AdminLayout
+  title="Configuración"
+  active="/admin/configuracion"
+  breadcrumbs={[{ label: 'Configuración' }]}
+>
+  <PageHeader
+    eyebrow="Administración"
+    title="Configuración"
+    subtitle="Define la identidad de la empresa, las notificaciones simuladas y la configuración base del cotizador solar."
+  >
+    <a slot="actions" href="/admin/configuracion/cotizador" class="admin-btn admin-btn-primary admin-btn-sm">
+      <Icon name="settings" class="h-4 w-4" />
+      Editor del cotizador
+    </a>
+  </PageHeader>
+
+  <section id="config-stats" class="mb-4 grid grid-cols-2 gap-3 xl:grid-cols-4" aria-label="Resumen de configuración">
+    {Array.from({ length: 4 }).map(() => (
+      <div class="admin-card flex items-center gap-3 p-4">
+        <div class="admin-skeleton h-9 w-9 rounded-lg"></div>
+        <div class="min-w-0 flex-1">
+          <div class="admin-skeleton h-5 w-16"></div>
+          <div class="admin-skeleton mt-1 h-3 w-24"></div>
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <div class="grid items-start gap-4 xl:grid-cols-[minmax(0,1fr)_360px]">
+    <div class="space-y-4">
+      <form id="preferences-form" class="admin-card">
+        <div class="admin-card-header">
+          <div>
+            <h2 class="admin-section-title">Preferencias generales</h2>
+            <p class="admin-section-subtitle">Datos de la empresa y comportamiento del panel de demostración.</p>
+          </div>
+          <span class="admin-badge border-line bg-natural text-muted">
+            <Icon name="building" class="h-3.5 w-3.5" />
+            Organización
+          </span>
+        </div>
+        <div class="admin-card-body space-y-6">
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div class="sm:col-span-2">
+              <label class="admin-label" for="pref-company">Nombre de la empresa</label>
+              <input id="pref-company" type="text" class="admin-input" placeholder="EnerSol" maxlength="80" />
+              <p class="admin-help">Se muestra en el panel y en los encabezados internos.</p>
+            </div>
+            <div>
+              <label class="admin-label" for="pref-currency">Moneda</label>
+              <select id="pref-currency" class="admin-select">
+                <option value="MXN">Peso mexicano (MXN)</option>
+                <option value="USD">Dólar estadounidense (USD)</option>
+                <option value="EUR">Euro (EUR)</option>
+              </select>
+              <p class="admin-help">Aplica a cotizaciones y reportes simulados.</p>
+            </div>
+            <div>
+              <label class="admin-label" for="pref-timezone">Zona horaria</label>
+              <select id="pref-timezone" class="admin-select">
+                <option value="America/Mexico_City">Ciudad de México (GMT-6)</option>
+                <option value="America/Monterrey">Monterrey (GMT-6)</option>
+                <option value="America/Tijuana">Tijuana (GMT-8)</option>
+                <option value="America/Cancun">Cancún (GMT-5)</option>
+              </select>
+              <p class="admin-help">Solo referencia visual para fechas y bitácoras.</p>
+            </div>
+          </div>
+
+          <div class="border-t border-line pt-5">
+            <h3 class="text-sm font-semibold text-charcoal">Notificaciones simuladas</h3>
+            <p class="mt-0.5 text-xs text-muted">
+              No se envían correos reales: estas preferencias solo controlan las alertas del prototipo.
+            </p>
+            <div class="mt-4 grid gap-3 sm:grid-cols-2">
+              <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-natural/40 p-3 transition-colors hover:border-forest/25 hover:bg-light-green/30">
+                <input id="pref-notify-requests" type="checkbox" class="admin-checkbox mt-0.5" />
+                <span>
+                  <span class="block text-sm font-medium text-charcoal">Nuevas solicitudes</span>
+                  <span class="mt-0.5 block text-xs text-muted">Avisar cuando ingrese una solicitud pública.</span>
+                </span>
+              </label>
+              <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-natural/40 p-3 transition-colors hover:border-forest/25 hover:bg-light-green/30">
+                <input id="pref-notify-quotes" type="checkbox" class="admin-checkbox mt-0.5" />
+                <span>
+                  <span class="block text-sm font-medium text-charcoal">Cotizaciones</span>
+                  <span class="mt-0.5 block text-xs text-muted">Avisar cuando se calcule o envíe una cotización.</span>
+                </span>
+              </label>
+              <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-natural/40 p-3 transition-colors hover:border-forest/25 hover:bg-light-green/30">
+                <input id="pref-notify-projects" type="checkbox" class="admin-checkbox mt-0.5" />
+                <span>
+                  <span class="block text-sm font-medium text-charcoal">Cambios en proyectos</span>
+                  <span class="mt-0.5 block text-xs text-muted">Avisar sobre estados, tareas y equipo.</span>
+                </span>
+              </label>
+              <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-natural/40 p-3 transition-colors hover:border-forest/25 hover:bg-light-green/30">
+                <input id="pref-weekly-summary" type="checkbox" class="admin-checkbox mt-0.5" />
+                <span>
+                  <span class="block text-sm font-medium text-charcoal">Resumen semanal</span>
+                  <span class="mt-0.5 block text-xs text-muted">Recibir un resumen de operación cada semana.</span>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col-reverse gap-2 border-t border-line px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <p class="text-[11px] text-muted">Los cambios se guardan en este navegador.</p>
+          <button type="submit" class="admin-btn admin-btn-primary admin-btn-sm">
+            <Icon name="save" class="h-4 w-4" />
+            Guardar preferencias
+          </button>
+        </div>
+      </form>
+
+      <section class="admin-card">
+        <div class="admin-card-header">
+          <div>
+            <h2 class="admin-section-title">Estado del cotizador</h2>
+            <p class="admin-section-subtitle">Validación de la configuración que alimenta el sitio público.</p>
+          </div>
+          <a href="/admin/configuracion/cotizador" class="text-xs font-semibold text-forest hover:underline">
+            Revisar configuración
+          </a>
+        </div>
+        <div id="config-issues" class="admin-card-body">
+          <div class="admin-skeleton h-16 w-full"></div>
+        </div>
+      </section>
+
+      <section class="admin-card">
+        <div class="admin-card-header">
+          <div>
+            <h2 class="admin-section-title">Datos de la demostración</h2>
+            <p class="admin-section-subtitle">Restablece los datos simulados cuando necesites volver al estado inicial.</p>
+          </div>
+          <span class="admin-badge border-warning/25 bg-warning-soft text-warning">
+            <Icon name="alert" class="h-3.5 w-3.5" />
+            Acción destructiva
+          </span>
+        </div>
+        <div class="admin-card-body space-y-3">
+          <div class="flex flex-col gap-3 rounded-xl border border-line p-3.5 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p class="text-sm font-semibold text-charcoal">Datos operativos</p>
+              <p class="mt-0.5 text-xs text-muted">Solicitudes, proyectos, usuarios, roles y actividad vuelven al estado inicial.</p>
+            </div>
+            <button type="button" id="reset-state" class="admin-btn admin-btn-secondary admin-btn-sm shrink-0">
+              <Icon name="rotate" class="h-3.5 w-3.5" />
+              Restablecer
+            </button>
+          </div>
+          <div class="flex flex-col gap-3 rounded-xl border border-line p-3.5 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p class="text-sm font-semibold text-charcoal">Configuración del cotizador</p>
+              <p class="mt-0.5 text-xs text-muted">Paneles, inversores, baterías, costos y reglas de cálculo vuelven a los valores por defecto.</p>
+            </div>
+            <button type="button" id="reset-config" class="admin-btn admin-btn-secondary admin-btn-sm shrink-0">
+              <Icon name="rotate" class="h-3.5 w-3.5" />
+              Restablecer
+            </button>
+          </div>
+          <div class="flex flex-col gap-3 rounded-xl border border-danger/20 bg-danger-soft/40 p-3.5 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p class="text-sm font-semibold text-charcoal">Toda la demostración</p>
+              <p class="mt-0.5 text-xs text-muted">Borra todos los cambios locales: datos operativos y configuración del cotizador.</p>
+            </div>
+            <button type="button" id="reset-all" class="admin-btn admin-btn-danger-soft admin-btn-sm shrink-0">
+              <Icon name="trash" class="h-3.5 w-3.5" />
+              Restablecer todo
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <aside class="space-y-4">
+      <section class="admin-card">
+        <div class="admin-card-header">
+          <h2 class="admin-section-title">Detalles del entorno</h2>
+        </div>
+        <div id="config-meta" class="admin-card-body">
+          <div class="space-y-2.5">
+            <div class="admin-skeleton h-4 w-full"></div>
+            <div class="admin-skeleton h-4 w-5/6"></div>
+            <div class="admin-skeleton h-4 w-full"></div>
+            <div class="admin-skeleton h-4 w-4/6"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="admin-card">
+        <div class="admin-card-header">
+          <h2 class="admin-section-title">Accesos rápidos</h2>
+        </div>
+        <div class="admin-card-body space-y-2">
+          <a href="/admin/configuracion/cotizador" class="flex items-center gap-2.5 rounded-lg border border-line p-2.5 text-sm font-medium text-charcoal transition-colors hover:border-forest/25 hover:bg-natural">
+            <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-light-green text-forest">
+              <Icon name="settings" class="h-4 w-4" />
+            </span>
+            Configuración del cotizador
+            <Icon name="chevronRight" class="ml-auto h-4 w-4 text-muted" />
+          </a>
+          <a href="/admin/usuarios" class="flex items-center gap-2.5 rounded-lg border border-line p-2.5 text-sm font-medium text-charcoal transition-colors hover:border-forest/25 hover:bg-natural">
+            <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-light-green text-forest">
+              <Icon name="users" class="h-4 w-4" />
+            </span>
+            Usuarios del equipo
+            <Icon name="chevronRight" class="ml-auto h-4 w-4 text-muted" />
+          </a>
+          <a href="/admin/roles" class="flex items-center gap-2.5 rounded-lg border border-line p-2.5 text-sm font-medium text-charcoal transition-colors hover:border-forest/25 hover:bg-natural">
+            <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-light-green text-forest">
+              <Icon name="shield" class="h-4 w-4" />
+            </span>
+            Roles y permisos
+            <Icon name="chevronRight" class="ml-auto h-4 w-4 text-muted" />
+          </a>
+          <a href="/solicitar-cotizacion" class="flex items-center gap-2.5 rounded-lg border border-line p-2.5 text-sm font-medium text-charcoal transition-colors hover:border-forest/25 hover:bg-natural">
+            <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-solar-soft text-forest">
+              <Icon name="sun" class="h-4 w-4" />
+            </span>
+            Cotizador público
+            <Icon name="external" class="ml-auto h-4 w-4 text-muted" />
+          </a>
+        </div>
+      </section>
+
+      <p class="flex items-start gap-2 rounded-xl border border-info/20 bg-info-soft/50 p-3 text-[11px] leading-relaxed text-charcoal/80">
+        <Icon name="info" class="mt-0.5 h-4 w-4 shrink-0 text-info" />
+        Los cambios de configuración se comparten con el cotizador público mediante el almacenamiento local del navegador.
+      </p>
+    </aside>
+  </div>
+
+  <script>
+    import { initSettings } from '../../../scripts/admin/configuracion';
+    initSettings();
+  </script>
+</AdminLayout>

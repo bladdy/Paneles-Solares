@@ -1,0 +1,74 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import PageHeader from '../../../components/admin/PageHeader.astro';
+import Icon from '../../../components/admin/Icon.astro';
+---
+
+<AdminLayout
+  title="Roles y permisos"
+  active="/admin/roles"
+  breadcrumbs={[{ label: 'Roles y permisos' }]}
+>
+  <PageHeader
+    eyebrow="Administración"
+    title="Roles y permisos"
+    subtitle="Define qué puede ver y hacer cada perfil. Los cambios se aplican al instante en la navegación simulada."
+  >
+    <a slot="actions" href="/admin/usuarios" class="admin-btn admin-btn-secondary admin-btn-sm">
+      <Icon name="users" class="h-4 w-4" />
+      Ver usuarios
+    </a>
+    <button slot="actions" type="button" data-new-role class="admin-btn admin-btn-primary admin-btn-sm">
+      <Icon name="plus" class="h-4 w-4" />
+      Nuevo rol
+    </button>
+  </PageHeader>
+
+  <section id="roles-summary" class="mb-4 grid grid-cols-2 gap-3 xl:grid-cols-4" aria-label="Resumen de roles">
+    {Array.from({ length: 4 }).map(() => (
+      <div class="admin-card flex items-center gap-3 p-4">
+        <div class="admin-skeleton h-9 w-9 rounded-lg"></div>
+        <div>
+          <div class="admin-skeleton h-6 w-10"></div>
+          <div class="admin-skeleton mt-1 h-3 w-20"></div>
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <div class="grid items-start gap-4 xl:grid-cols-[320px_minmax(0,1fr)]">
+    <aside class="admin-card">
+      <div class="admin-card-header">
+        <div>
+          <h2 class="admin-section-title">Roles disponibles</h2>
+          <p class="admin-section-subtitle">Selecciona un rol para editar sus permisos.</p>
+        </div>
+      </div>
+      <div id="roles-list" class="space-y-2 p-3">
+        {Array.from({ length: 5 }).map(() => (
+          <div class="admin-skeleton h-20 w-full"></div>
+        ))}
+      </div>
+    </aside>
+
+    <div id="roles-editor">
+      <div class="admin-card">
+        <div class="admin-card-body space-y-4">
+          <div class="admin-skeleton h-6 w-48"></div>
+          <div class="admin-skeleton h-4 w-full"></div>
+          <div class="admin-skeleton h-64 w-full"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="mt-4 flex items-start gap-2 rounded-xl border border-line bg-white p-3 text-xs leading-relaxed text-muted">
+    <Icon name="info" class="mt-0.5 h-4 w-4 shrink-0 text-info" />
+    Las rutas del panel se ocultan o redirigen según los permisos del rol activo. Puedes cambiar de rol desde el selector en la barra superior para probar cada perfil.
+  </p>
+
+  <script>
+    import { initRoles } from '../../../scripts/admin/roles';
+    initRoles();
+  </script>
+</AdminLayout>

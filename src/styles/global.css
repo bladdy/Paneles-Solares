@@ -2,12 +2,24 @@
 
 @theme {
   --color-forest: #123B2A;
+  --color-forest-light: #1B5440;
+  --color-forest-dark: #0B2419;
   --color-solar: #F5B82E;
+  --color-solar-soft: #FDF2D6;
   --color-natural: #F6F8F5;
   --color-charcoal: #26352E;
   --color-light-green: #DCE9DF;
-  --color-white: #FFFFFF;
-  
+  --color-line: #E4E7EC;
+  --color-muted: #667085;
+  --color-success: #067647;
+  --color-success-soft: #DCFAE6;
+  --color-warning: #B54708;
+  --color-warning-soft: #FEF0C7;
+  --color-danger: #B42318;
+  --color-danger-soft: #FEE4E2;
+  --color-info: #175CD3;
+  --color-info-soft: #E0EAFF;
+
   --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -19,11 +31,16 @@
     scroll-behavior: smooth;
     font-family: var(--font-sans);
   }
-  
+
   body {
     @apply bg-white text-charcoal antialiased;
   }
-  
+
+  ::selection {
+    background-color: #f5b82e55;
+    color: #123b2a;
+  }
+
   :focus-visible {
     @apply outline-2 outline-solar outline-offset-2;
   }

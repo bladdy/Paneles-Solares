@@ -1,0 +1,99 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import PageHeader from '../../../components/admin/PageHeader.astro';
+import Icon from '../../../components/admin/Icon.astro';
+import { PROJECT_TYPE_OPTIONS } from '../../../data/cotizador-defaults';
+---
+
+<AdminLayout
+  title="Solicitudes"
+  active="/admin/solicitudes"
+  breadcrumbs={[{ label: 'Solicitudes' }]}
+>
+  <PageHeader
+    eyebrow="Gestión comercial"
+    title="Solicitudes"
+    subtitle="Da seguimiento a cada solicitud desde el primer contacto hasta la conversión en proyecto."
+  >
+    <button slot="actions" type="button" id="requests-export" class="admin-btn admin-btn-secondary admin-btn-sm">
+      <Icon name="download" class="h-4 w-4" />
+      Exportar CSV
+    </button>
+    <button slot="actions" type="button" data-open-new class="admin-btn admin-btn-primary admin-btn-sm">
+      <Icon name="plus" class="h-4 w-4" />
+      Nueva solicitud
+    </button>
+  </PageHeader>
+
+  <section class="admin-card mb-4">
+    <div class="flex flex-col gap-3 border-b border-line px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+      <div id="request-status-chips" class="flex flex-wrap gap-1.5" aria-label="Filtrar por estado">
+        <div class="admin-skeleton h-8 w-20"></div>
+        <div class="admin-skeleton h-8 w-24"></div>
+        <div class="admin-skeleton h-8 w-24"></div>
+      </div>
+      <p id="requests-count" class="shrink-0 text-xs font-medium text-muted">Cargando…</p>
+    </div>
+
+    <div class="flex flex-col gap-3 p-4 lg:flex-row lg:items-center">
+      <div class="relative flex-1">
+        <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted">
+          <Icon name="search" class="h-4 w-4" />
+        </span>
+        <input
+          id="requests-search"
+          type="search"
+          class="admin-input pl-9"
+          placeholder="Buscar por folio, cliente, empresa, correo o ubicación…"
+          aria-label="Buscar solicitudes"
+        />
+      </div>
+      <div class="grid grid-cols-1 gap-2 sm:grid-cols-3 lg:w-auto">
+        <select data-filter="type" class="admin-select lg:w-40" aria-label="Tipo de proyecto">
+          <option value="todos">Todos los tipos</option>
+          {PROJECT_TYPE_OPTIONS.map((option) => (
+            <option value={option.value}>{option.label}</option>
+          ))}
+        </select>
+        <select data-filter="responsible" class="admin-select lg:w-48" aria-label="Responsable">
+          <option value="todos">Todos los responsables</option>
+        </select>
+        <select data-filter="source" class="admin-select lg:w-40" aria-label="Origen">
+          <option value="todas">Todos los orígenes</option>
+          <option value="sitio-publico">Sitio público</option>
+          <option value="manual">Captura manual</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <section aria-label="Listado de solicitudes">
+    <div id="requests-table" class="admin-table-wrap">
+      <div class="space-y-2 p-4">
+        {Array.from({ length: 6 }).map(() => (
+          <div class="admin-skeleton h-12 w-full"></div>
+        ))}
+      </div>
+    </div>
+
+    <div id="requests-pagination" class="mt-3 flex flex-col items-center justify-between gap-3 sm:flex-row" hidden>
+      <p id="requests-range" class="text-xs text-muted"></p>
+      <div class="flex items-center gap-2">
+        <button type="button" id="requests-prev" class="admin-btn admin-btn-secondary admin-btn-sm">
+          <Icon name="chevronLeft" class="h-3.5 w-3.5" />
+          Anterior
+        </button>
+        <span id="requests-page-label" class="text-xs font-medium text-muted"></span>
+        <button type="button" id="requests-next" class="admin-btn admin-btn-secondary admin-btn-sm">
+          Siguiente
+          <Icon name="chevronRight" class="h-3.5 w-3.5" />
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import { initSolicitudes } from '../../../scripts/admin/solicitudes';
+    initSolicitudes();
+  </script>
+</AdminLayout>

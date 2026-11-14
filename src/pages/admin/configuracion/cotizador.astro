@@ -1,0 +1,85 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import PageHeader from '../../../components/admin/PageHeader.astro';
+import Icon from '../../../components/admin/Icon.astro';
+---
+
+<AdminLayout
+  title="Configuración del cotizador"
+  active="/admin/configuracion/cotizador"
+  breadcrumbs={[
+    { label: 'Configuración', href: '/admin/configuracion' },
+    { label: 'Cotizador' },
+  ]}
+>
+  <PageHeader
+    eyebrow="Configuración"
+    title="Cotizador solar"
+    subtitle="Administra catálogos, costos, márgenes y reglas de cálculo. Todo lo que guardes aquí alimenta la cotización pública."
+  >
+    <span id="cotizador-status" slot="actions" class="admin-badge border-line bg-natural text-muted">
+      <Icon name="clock" class="h-3.5 w-3.5" />
+      Cargando…
+    </span>
+    <button slot="actions" type="button" id="cotizador-discard" class="admin-btn admin-btn-secondary admin-btn-sm" disabled>
+      <Icon name="rotate" class="h-4 w-4" />
+      Descartar
+    </button>
+    <button slot="actions" type="button" id="cotizador-reset" class="admin-btn admin-btn-secondary admin-btn-sm">
+      <Icon name="refresh" class="h-4 w-4" />
+      Restaurar
+    </button>
+    <button slot="actions" type="button" id="cotizador-save" class="admin-btn admin-btn-primary admin-btn-sm" disabled>
+      <Icon name="save" class="h-4 w-4" />
+      Guardar cambios
+    </button>
+  </PageHeader>
+
+  <div class="grid items-start gap-4 xl:grid-cols-[minmax(0,1fr)_360px]">
+    <div class="min-w-0 space-y-4">
+      <section class="admin-card">
+        <div id="cotizador-tabs" class="admin-tabs px-3 pt-2" role="tablist" aria-label="Secciones de configuración">
+          <div class="admin-skeleton h-9 w-full"></div>
+        </div>
+        <div id="cotizador-panel" class="admin-card-body" role="tabpanel">
+          <div class="space-y-3">
+            <div class="admin-skeleton h-6 w-48"></div>
+            <div class="admin-skeleton h-4 w-full"></div>
+            <div class="grid gap-3 sm:grid-cols-2">
+              {Array.from({ length: 4 }).map(() => (
+                <div class="admin-skeleton h-16 w-full"></div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div id="cotizador-issues">
+        <div class="admin-skeleton h-14 w-full"></div>
+      </div>
+
+      <p class="flex items-start gap-2 rounded-xl border border-info/20 bg-info-soft/50 p-3 text-xs leading-relaxed text-charcoal/80">
+        <Icon name="info" class="mt-0.5 h-4 w-4 shrink-0 text-info" />
+        Los cambios se guardan en el <strong>localStorage</strong> de este navegador y se comparten con el cotizador público. No hay backend ni sincronización entre dispositivos.
+      </p>
+    </div>
+
+    <aside class="min-w-0">
+      <div id="cotizador-preview">
+        <div class="admin-card">
+          <div class="admin-card-body space-y-3">
+            <div class="admin-skeleton h-5 w-32"></div>
+            <div class="admin-skeleton h-10 w-full"></div>
+            <div class="admin-skeleton h-10 w-full"></div>
+            <div class="admin-skeleton h-24 w-full"></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    import { initCotizadorAdmin } from '../../../scripts/admin/cotizador-admin';
+    initCotizadorAdmin();
+  </script>
+</AdminLayout>

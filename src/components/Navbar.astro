@@ -1,6 +1,5 @@
 ---
 import { siteConfig, navLinks } from '../data/site';
-import { Astro } from 'astro';
 const pathname = Astro.url.pathname;
 const isCotizacionPage = pathname.includes('solicitar-cotizacion');
 const homeHref = isCotizacionPage ? '/' : '#inicio';

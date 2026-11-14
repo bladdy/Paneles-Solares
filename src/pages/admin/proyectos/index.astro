@@ -1,0 +1,112 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import PageHeader from '../../../components/admin/PageHeader.astro';
+import Icon from '../../../components/admin/Icon.astro';
+import { PROJECT_TYPE_OPTIONS } from '../../../data/cotizador-defaults';
+import { PROJECT_STATUS_LABEL, PROJECT_STATUS_ORDER } from '../../../utils/status';
+---
+
+<AdminLayout
+  title="Proyectos"
+  active="/admin/proyectos"
+  breadcrumbs={[{ label: 'Proyectos' }]}
+>
+  <PageHeader
+    eyebrow="Ejecución"
+    title="Proyectos"
+    subtitle="Gestiona la ejecución de cada instalación en tabla o tablero Kanban, con avance, responsables y tareas."
+  >
+    <div slot="actions" class="flex items-center rounded-lg border border-line bg-white p-0.5" role="group" aria-label="Vista de proyectos">
+      <button type="button" data-view="tabla" class="admin-chip admin-chip-active" aria-pressed="true">
+        <Icon name="list" class="h-3.5 w-3.5" />
+        Tabla
+      </button>
+      <button type="button" data-view="kanban" class="admin-chip" aria-pressed="false">
+        <Icon name="columns" class="h-3.5 w-3.5" />
+        Kanban
+      </button>
+    </div>
+    <button slot="actions" type="button" id="projects-export" class="admin-btn admin-btn-secondary admin-btn-sm">
+      <Icon name="download" class="h-4 w-4" />
+      Exportar CSV
+    </button>
+    <button slot="actions" type="button" data-new-project class="admin-btn admin-btn-primary admin-btn-sm">
+      <Icon name="plus" class="h-4 w-4" />
+      Nuevo proyecto
+    </button>
+  </PageHeader>
+
+  <section class="admin-card mb-4">
+    <div class="flex flex-col gap-3 p-4 lg:flex-row lg:items-center">
+      <div class="relative flex-1">
+        <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted">
+          <Icon name="search" class="h-4 w-4" />
+        </span>
+        <input
+          id="projects-search"
+          type="search"
+          class="admin-input pl-9"
+          placeholder="Buscar por folio, proyecto, cliente o ubicación…"
+          aria-label="Buscar proyectos"
+        />
+      </div>
+      <div class="grid grid-cols-1 gap-2 sm:grid-cols-3 lg:w-auto">
+        <select data-filter="status" class="admin-select lg:w-48" aria-label="Estado del proyecto">
+          <option value="todos">Todos los estados</option>
+          <option value="activos">Solo activos</option>
+          {PROJECT_STATUS_ORDER.map((status) => (
+            <option value={status}>{PROJECT_STATUS_LABEL[status]}</option>
+          ))}
+        </select>
+        <select data-filter="type" class="admin-select lg:w-40" aria-label="Tipo de proyecto">
+          <option value="todos">Todos los tipos</option>
+          {PROJECT_TYPE_OPTIONS.map((option) => (
+            <option value={option.value}>{option.label}</option>
+          ))}
+        </select>
+        <select data-filter="responsible" class="admin-select lg:w-48" aria-label="Responsable">
+          <option value="todos">Todos los responsables</option>
+        </select>
+      </div>
+      <p id="projects-count" class="shrink-0 text-xs font-medium text-muted">Cargando…</p>
+    </div>
+  </section>
+
+  <section id="projects-table-wrap" aria-label="Listado de proyectos">
+    <div id="projects-table" class="admin-table-wrap">
+      <div class="space-y-2 p-4">
+        {Array.from({ length: 6 }).map(() => (
+          <div class="admin-skeleton h-12 w-full"></div>
+        ))}
+      </div>
+    </div>
+
+    <div id="projects-pagination" class="mt-3 flex flex-col items-center justify-between gap-3 sm:flex-row" hidden>
+      <p id="projects-range" class="text-xs text-muted"></p>
+      <div class="flex items-center gap-2">
+        <button type="button" id="projects-prev" class="admin-btn admin-btn-secondary admin-btn-sm">
+          <Icon name="chevronLeft" class="h-3.5 w-3.5" />
+          Anterior
+        </button>
+        <span id="projects-page-label" class="text-xs font-medium text-muted"></span>
+        <button type="button" id="projects-next" class="admin-btn admin-btn-secondary admin-btn-sm">
+          Siguiente
+          <Icon name="chevronRight" class="h-3.5 w-3.5" />
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects-kanban-wrap" class="hidden" aria-label="Tablero Kanban de proyectos">
+    <p class="mb-3 flex items-start gap-2 rounded-xl border border-info/20 bg-info-soft/60 p-3 text-xs leading-relaxed text-charcoal/80">
+      <Icon name="info" class="mt-0.5 h-4 w-4 shrink-0 text-info" />
+      Arrastra las tarjetas entre columnas o usa el selector de cada tarjeta para actualizar el estado del proyecto.
+    </p>
+    <div id="projects-kanban" class="admin-skeleton h-64 w-full"></div>
+  </section>
+
+  <script>
+    import { initProjects } from '../../../scripts/admin/proyectos';
+    initProjects();
+  </script>
+</AdminLayout>

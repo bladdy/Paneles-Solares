@@ -1,0 +1,124 @@
+---
+import AuthLayout from '../../layouts/AuthLayout.astro';
+import Icon from '../../components/admin/Icon.astro';
+---
+
+<AuthLayout title="Iniciar sesión">
+  <div class="rounded-2xl border border-line bg-white p-6 shadow-[0_8px_30px_rgba(16,24,40,0.06)] sm:p-8">
+    <span
+      class="inline-flex items-center gap-2 rounded-full border border-solar/40 bg-solar-soft px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-forest"
+    >
+      <span class="h-1.5 w-1.5 rounded-full bg-solar"></span>
+      Acceso de demostración
+    </span>
+    <h1 class="mt-4 font-display text-2xl font-extrabold tracking-tight text-forest">
+      Bienvenido de nuevo
+    </h1>
+    <p class="mt-1.5 text-sm leading-relaxed text-muted">
+      Ingresa con cualquiera de las cuentas activas del equipo para explorar el panel según su rol.
+    </p>
+
+    <div class="mt-5 flex items-start gap-3 rounded-xl border border-info/20 bg-info-soft/60 p-3.5">
+      <Icon name="info" class="mt-0.5 h-4 w-4 shrink-0 text-info" />
+      <div class="text-xs leading-relaxed text-charcoal/80">
+        <p class="font-semibold text-charcoal">Credenciales de prueba</p>
+        <p class="mt-0.5">
+          Correo: <code class="rounded bg-white px-1 py-0.5 font-mono text-[11px]">admin@enersol.mx</code>
+          · Contraseña: <code class="rounded bg-white px-1 py-0.5 font-mono text-[11px]">demo1234</code>
+        </p>
+        <p class="mt-1 text-muted">La contraseña no se valida: es un prototipo sin autenticación real.</p>
+      </div>
+    </div>
+
+    <form id="login-form" class="mt-6 space-y-4" novalidate>
+      <div>
+        <label for="login-email" class="admin-label">Correo electrónico</label>
+        <div class="relative">
+          <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted">
+            <Icon name="mail" class="h-4 w-4" />
+          </span>
+          <input
+            id="login-email"
+            name="email"
+            type="email"
+            autocomplete="username"
+            class="admin-input pl-9"
+            placeholder="nombre@enersol.mx"
+            value="admin@enersol.mx"
+            required
+          />
+        </div>
+        <p id="login-email-error" class="admin-error-text hidden" role="alert"></p>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between">
+          <label for="login-password" class="admin-label">Contraseña</label>
+          <span class="mb-1.5 text-xs text-muted">Demo: demo1234</span>
+        </div>
+        <div class="relative">
+          <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted">
+            <Icon name="lock" class="h-4 w-4" />
+          </span>
+          <input
+            id="login-password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            class="admin-input px-9"
+            placeholder="••••••••"
+            required
+          />
+          <button
+            type="button"
+            id="toggle-password"
+            class="admin-icon-btn absolute right-1 top-1/2 h-8 w-8 -translate-y-1/2"
+            aria-label="Mostrar contraseña"
+            aria-pressed="false"
+          >
+            <Icon name="eye" class="h-4 w-4" />
+          </button>
+        </div>
+        <p id="login-password-error" class="admin-error-text hidden" role="alert"></p>
+      </div>
+
+      <div class="flex items-center justify-between gap-3">
+        <label class="flex cursor-pointer items-center gap-2 text-sm text-charcoal/80">
+          <input id="login-remember" type="checkbox" class="admin-checkbox" checked />
+          Mantener sesión
+        </label>
+        <span class="text-xs text-muted" title="No disponible en este prototipo">¿Olvidaste tu contraseña?</span>
+      </div>
+
+      <button
+        type="submit"
+        class="admin-btn admin-btn-primary admin-btn-lg w-full"
+      >
+        <Icon name="login" class="h-4 w-4" />
+        Iniciar sesión
+      </button>
+    </form>
+
+    <div class="my-6 flex items-center gap-3">
+      <span class="h-px flex-1 bg-line"></span>
+      <span class="text-[11px] font-semibold uppercase tracking-wider text-muted">Acceso rápido por rol</span>
+      <span class="h-px flex-1 bg-line"></span>
+    </div>
+
+    <div id="quick-access" class="space-y-2">
+      <div class="admin-skeleton h-[58px] w-full"></div>
+      <div class="admin-skeleton h-[58px] w-full"></div>
+      <div class="admin-skeleton h-[58px] w-full"></div>
+    </div>
+  </div>
+
+  <div class="mt-6 flex items-center justify-center gap-2 text-xs text-muted">
+    <Icon name="arrowLeft" class="h-3.5 w-3.5" />
+    <a href="/" class="font-medium text-forest hover:underline">Volver al sitio público</a>
+  </div>
+
+  <script>
+    import { initLogin } from '../../scripts/admin/login';
+    initLogin();
+  </script>
+</AuthLayout>

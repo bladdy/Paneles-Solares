@@ -1,0 +1,327 @@
+@import "./global.css";
+
+@layer base {
+  body {
+    @apply bg-natural text-charcoal font-sans;
+  }
+}
+
+@layer components {
+  /* Botones */
+  .admin-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-transparent px-3.5 py-2 text-sm font-semibold transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-solar focus-visible:outline-offset-2 whitespace-nowrap;
+  }
+  .admin-btn-primary {
+    @apply bg-forest text-white hover:bg-forest-light;
+  }
+  .admin-btn-solar {
+    @apply bg-solar text-forest hover:bg-[#e8ab22];
+  }
+  .admin-btn-secondary {
+    @apply border-line bg-white text-charcoal hover:bg-natural;
+  }
+  .admin-btn-ghost {
+    @apply text-charcoal hover:bg-light-green/60;
+  }
+  .admin-btn-danger {
+    @apply bg-danger text-white hover:bg-[#991b13];
+  }
+  .admin-btn-danger-soft {
+    @apply border-danger/20 bg-danger-soft text-danger hover:bg-[#fdd3cf];
+  }
+  .admin-btn-success {
+    @apply bg-success text-white hover:bg-[#055c38];
+  }
+  .admin-btn-sm {
+    @apply px-2.5 py-1.5 text-xs;
+  }
+  .admin-btn-lg {
+    @apply px-5 py-2.5 text-sm;
+  }
+  .admin-icon-btn {
+    @apply inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-natural hover:text-forest focus-visible:outline-2 focus-visible:outline-solar focus-visible:outline-offset-2;
+  }
+
+  /* Formularios */
+  .admin-label {
+    @apply mb-1.5 block text-sm font-semibold text-charcoal;
+  }
+  .admin-help {
+    @apply mt-1 text-xs leading-relaxed text-muted;
+  }
+  .admin-error-text {
+    @apply mt-1 text-xs font-medium text-danger;
+  }
+  .admin-input,
+  .admin-select,
+  .admin-textarea {
+    @apply w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-charcoal shadow-[0_1px_2px_rgba(16,24,40,0.03)] transition-colors placeholder:text-muted/70 focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/15 disabled:cursor-not-allowed disabled:bg-natural;
+  }
+  .admin-select {
+    @apply appearance-none bg-[length:16px] bg-[right_0.75rem_center] bg-no-repeat pr-10;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23667085' stroke-width='1.8' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  }
+  .admin-input-error,
+  .admin-select-error,
+  .admin-textarea-error {
+    @apply border-danger focus:border-danger focus:ring-danger/15;
+  }
+  .admin-checkbox {
+    @apply h-4 w-4 rounded border-line text-forest accent-forest focus:ring-forest/20;
+  }
+
+  /* Superficies */
+  .admin-card {
+    @apply min-w-0 rounded-2xl border border-line bg-white shadow-[0_1px_2px_rgba(16,24,40,0.04)];
+  }
+  .admin-card-header {
+    @apply flex flex-wrap items-start justify-between gap-3 border-b border-line px-5 py-4;
+  }
+  .admin-card-body {
+    @apply p-5;
+  }
+  .admin-section-title {
+    @apply font-display text-base font-bold text-forest;
+  }
+  .admin-section-subtitle {
+    @apply mt-0.5 text-xs text-muted;
+  }
+  .admin-kpi {
+    @apply relative overflow-hidden rounded-2xl border border-line bg-white p-5 shadow-[0_1px_2px_rgba(16,24,40,0.04)] transition-shadow hover:shadow-[0_6px_20px_rgba(16,24,40,0.06)];
+  }
+
+  /* Badges y chips */
+  .admin-badge {
+    @apply inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs font-semibold;
+  }
+  .admin-chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3 py-1.5 text-xs font-medium text-charcoal transition-colors hover:border-forest/30 hover:bg-natural;
+  }
+  .admin-chip-active {
+    @apply border-forest bg-forest text-white hover:bg-forest;
+  }
+
+  /* Tablas */
+  .admin-table-wrap {
+    @apply overflow-x-auto rounded-2xl border border-line bg-white;
+  }
+  .admin-table {
+    @apply w-full min-w-[900px] border-collapse text-left text-sm;
+  }
+  .admin-table thead {
+    @apply border-b border-line bg-natural/70;
+  }
+  .admin-table th {
+    @apply whitespace-nowrap px-4 py-3 text-[11px] font-bold uppercase tracking-wider text-muted;
+  }
+  .admin-table td {
+    @apply border-b border-line/80 px-4 py-3 align-middle;
+  }
+  .admin-table tbody tr {
+    @apply transition-colors hover:bg-natural/50 last:[&>td]:border-b-0;
+  }
+  .admin-table-sort {
+    @apply inline-flex items-center gap-1 text-left uppercase tracking-wider hover:text-forest;
+  }
+
+  /* Tabs */
+  .admin-tabs {
+    @apply flex gap-1 overflow-x-auto border-b border-line;
+  }
+  .admin-tab {
+    @apply inline-flex items-center gap-2 whitespace-nowrap border-b-2 border-transparent px-3.5 py-2.5 text-sm font-semibold text-muted transition-colors hover:text-forest;
+  }
+  .admin-tab-active {
+    @apply border-forest text-forest;
+  }
+
+  /* Navegación lateral */
+  .admin-nav-link {
+    @apply flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white;
+  }
+  .admin-nav-link-active {
+    @apply bg-white/12 text-white shadow-[inset_3px_0_0_0_#F5B82E];
+  }
+  .admin-nav-group {
+    @apply px-3 pb-1 pt-4 text-[10px] font-bold uppercase tracking-[0.16em] text-white/35;
+  }
+
+  /* Estados y utilidades */
+  .admin-empty {
+    @apply flex flex-col items-center justify-center px-6 py-14 text-center;
+  }
+  .admin-skeleton {
+    @apply relative overflow-hidden rounded-lg bg-slate-100;
+  }
+  .admin-skeleton::after {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+    animation: admin-shimmer 1.5s infinite;
+  }
+  .admin-progress {
+    @apply h-2 w-full overflow-hidden rounded-full bg-light-green;
+  }
+  .admin-progress-bar {
+    @apply h-full rounded-full bg-forest transition-[width] duration-500;
+  }
+  .admin-switch {
+    @apply relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full bg-slate-200 transition-colors focus-visible:outline-2 focus-visible:outline-solar focus-visible:outline-offset-2;
+  }
+  .admin-switch[aria-checked='true'] {
+    @apply bg-forest;
+  }
+  .admin-switch::after {
+    content: '';
+    @apply absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform;
+  }
+  .admin-switch[aria-checked='true']::after {
+    transform: translateX(20px);
+  }
+  .admin-avatar {
+    @apply inline-flex shrink-0 items-center justify-center rounded-full font-semibold text-white;
+  }
+  .admin-divider {
+    @apply h-px w-full bg-line;
+  }
+  .admin-link {
+    @apply font-semibold text-forest underline-offset-4 hover:underline;
+  }
+  .admin-kbd {
+    @apply inline-flex items-center rounded border border-line bg-natural px-1.5 py-0.5 font-mono text-[10px] text-muted;
+  }
+
+  /* Modal / drawer / toast */
+  .admin-backdrop {
+    @apply fixed inset-0 z-[80] bg-charcoal/45 backdrop-blur-[2px];
+    animation: admin-fade-in 160ms ease-out;
+  }
+  .admin-modal-panel {
+    @apply fixed left-1/2 top-1/2 z-[81] max-h-[90vh] w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-2xl border border-line bg-white shadow-2xl;
+    animation: admin-scale-in 180ms ease-out;
+  }
+  .admin-drawer-panel {
+    @apply fixed inset-y-0 right-0 z-[81] flex w-full max-w-md flex-col border-l border-line bg-white shadow-2xl;
+    animation: admin-slide-in 220ms ease-out;
+  }
+  .admin-toast {
+    @apply pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-xl border border-line bg-white p-3.5 shadow-lg;
+    animation: admin-slide-up 220ms ease-out;
+  }
+
+  /* Kanban */
+  .kanban-board {
+    @apply relative flex gap-4 overflow-x-auto pb-3;
+  }
+  .kanban-column {
+    @apply w-[286px] shrink-0 rounded-2xl border border-line bg-natural/80 p-3;
+  }
+  .kanban-column.drag-over {
+    @apply border-forest/40 bg-light-green/50;
+  }
+  .kanban-card {
+    @apply cursor-grab rounded-xl border border-line bg-white p-3.5 shadow-[0_1px_2px_rgba(16,24,40,0.04)] transition-shadow hover:shadow-md active:cursor-grabbing;
+  }
+  .kanban-card.dragging {
+    @apply opacity-40;
+  }
+
+  /* Scrollbars */
+  .admin-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: #c7d0c9 transparent;
+  }
+  .admin-scroll::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .admin-scroll::-webkit-scrollbar-thumb {
+    background: #c7d0c9;
+    border-radius: 999px;
+  }
+}
+
+/* Estructura del layout administrativo */
+#admin-sidebar {
+  width: 264px;
+  transition: width 180ms ease, transform 220ms ease;
+}
+#admin-main {
+  min-height: 100vh;
+  transition: padding-left 180ms ease;
+}
+#toast-root {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 120;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: calc(100% - 2rem);
+  max-width: 24rem;
+  pointer-events: none;
+}
+body.sidebar-collapsed #admin-sidebar {
+  width: 84px;
+}
+body.sidebar-collapsed .sidebar-collapse-hide {
+  display: none !important;
+}
+body.sidebar-collapsed .admin-nav-link {
+  justify-content: center;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+@media (min-width: 1024px) {
+  #admin-main {
+    padding-left: 264px;
+  }
+  body.sidebar-collapsed #admin-main {
+    padding-left: 84px;
+  }
+}
+
+@media (max-width: 1023px) {
+  #admin-sidebar {
+    transform: translateX(-100%);
+  }
+  body.sidebar-open #admin-sidebar {
+    transform: translateX(0);
+  }
+  body.sidebar-open {
+    overflow: hidden;
+  }
+  body.sidebar-open #sidebar-backdrop {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+@keyframes admin-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes admin-scale-in {
+  from { opacity: 0; transform: translate(-50%, -48%) scale(0.98); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes admin-slide-in {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+@keyframes admin-slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes admin-shimmer {
+  100% { transform: translateX(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #admin-sidebar,
+  #admin-main {
+    transition: none;
+  }
+}
