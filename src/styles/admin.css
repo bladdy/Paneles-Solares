@@ -181,6 +181,12 @@
   .admin-avatar {
     @apply inline-flex shrink-0 items-center justify-center rounded-full font-semibold text-white;
   }
+  .admin-avatar-stack {
+    @apply inline-flex items-center;
+  }
+  .admin-avatar-stack > * + * {
+    margin-left: -0.5rem;
+  }
   .admin-divider {
     @apply h-px w-full bg-line;
   }
@@ -238,6 +244,121 @@
   .admin-scroll::-webkit-scrollbar-thumb {
     background: #c7d0c9;
     border-radius: 999px;
+  }
+
+  /* Calendario / Agenda */
+  .admin-segmented {
+    @apply inline-flex items-center gap-0.5 rounded-full border border-line bg-natural p-1;
+  }
+  .admin-segmented button {
+    @apply rounded-full px-3 py-1.5 text-xs font-semibold text-muted transition-colors hover:text-forest;
+  }
+  .admin-segmented button.admin-segmented-active {
+    @apply bg-white text-forest shadow-sm;
+  }
+  .agenda-day {
+    @apply flex;
+  }
+  .agenda-time-gutter {
+    @apply w-14 shrink-0 select-none;
+  }
+  .agenda-hour-label {
+    @apply pr-2 text-right;
+  }
+  .agenda-hour-label span {
+    @apply block -translate-y-1/2 text-[11px] font-medium text-muted;
+  }
+  .agenda-day-body,
+  .agenda-week-column {
+    @apply relative overflow-hidden bg-white;
+  }
+  .agenda-day-body {
+    @apply flex-1 rounded-xl border border-line/70;
+  }
+  .agenda-hour-line {
+    @apply absolute left-0 right-0 border-t border-line/60;
+  }
+  .agenda-now-line {
+    @apply absolute left-0 right-0 z-10 border-t-2 border-danger;
+  }
+  .agenda-now-dot {
+    @apply absolute -left-1 -top-[5px] h-2.5 w-2.5 rounded-full bg-danger;
+  }
+  .agenda-event {
+    @apply absolute z-[5] flex items-stretch gap-2 overflow-hidden rounded-md border border-line/80 px-2 py-1 text-left shadow-sm transition-shadow hover:z-20 hover:shadow-md focus-visible:outline-2 focus-visible:outline-solar;
+  }
+  .agenda-event-compact {
+    @apply gap-1.5 px-1.5 py-0.5;
+  }
+  .agenda-event-cancelada {
+    @apply opacity-60;
+  }
+  .agenda-event-bar {
+    @apply w-1 shrink-0 rounded-full;
+  }
+  .agenda-week-header {
+    @apply grid border-b border-line bg-natural/60;
+    grid-template-columns: 3.5rem repeat(7, minmax(9rem, 1fr));
+  }
+  .agenda-week-gutter {
+    @apply border-r border-line;
+  }
+  .agenda-week-day {
+    @apply flex flex-col items-center gap-0.5 border-r border-line/70 py-2 transition-colors last:border-r-0 hover:bg-light-green/40;
+  }
+  .agenda-week-day-number {
+    @apply flex h-7 w-7 items-center justify-center rounded-full text-sm font-bold text-charcoal;
+  }
+  .agenda-week-day-today .agenda-week-day-number {
+    @apply bg-forest text-white;
+  }
+  .agenda-week-body-wrap {
+    @apply overflow-x-auto;
+  }
+  .agenda-week-grid {
+    @apply grid;
+    grid-template-columns: 3.5rem repeat(7, minmax(9rem, 1fr));
+  }
+  .agenda-week-column {
+    @apply border-r border-line/70 last:border-r-0;
+  }
+  .agenda-month-header {
+    @apply grid grid-cols-7 border-b border-line bg-natural/60;
+  }
+  .agenda-month-weekday {
+    @apply py-2 text-center text-[11px] font-bold uppercase tracking-wider text-muted;
+  }
+  .agenda-month-grid {
+    @apply grid grid-cols-7;
+  }
+  .agenda-month-cell {
+    @apply flex min-h-[6.5rem] flex-col gap-1 overflow-hidden border-b border-r border-line/70 p-1.5;
+  }
+  .agenda-month-cell:nth-child(7n) {
+    border-right-width: 0;
+  }
+  .agenda-month-cell-out {
+    @apply bg-natural/60;
+  }
+  .agenda-month-date {
+    @apply flex h-6 w-6 items-center justify-center self-start rounded-full text-xs font-semibold text-charcoal transition-colors hover:bg-forest hover:text-white;
+  }
+  .agenda-month-date-today {
+    @apply bg-forest text-white hover:bg-forest;
+  }
+  .agenda-month-chip {
+    @apply flex min-w-0 items-center gap-1 rounded bg-white/90 px-1.5 py-0.5 text-[10px] font-medium text-charcoal/90 shadow-sm transition-colors hover:bg-light-green;
+  }
+  .agenda-month-more {
+    @apply px-1 text-[10px] font-medium text-muted;
+  }
+  @media (max-width: 640px) {
+    .agenda-month-cell {
+      min-height: 4.5rem;
+    }
+    .agenda-month-chip .truncate {
+      display: none;
+    }
   }
 }
 

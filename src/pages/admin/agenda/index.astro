@@ -1,0 +1,80 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import PageHeader from '../../../components/admin/PageHeader.astro';
+import Icon from '../../../components/admin/Icon.astro';
+import { EVENT_CATEGORY_VALUES, EVENT_STATUS_VALUES } from '../../../types/calendar';
+import { AGENDA_CATEGORY_LABEL, EVENT_STATUS_LABEL } from '../../../utils/status';
+---
+
+<AdminLayout
+  title="Agenda"
+  active="/admin/agenda"
+  breadcrumbs={[{ label: 'Agenda' }]}
+>
+  <PageHeader
+    eyebrow="Gestión"
+    title="Agenda"
+    subtitle="Programa visitas técnicas, levantamientos, instalaciones, mantenimientos y reuniones del equipo."
+  >
+    <button slot="actions" type="button" data-new-event class="admin-btn admin-btn-primary admin-btn-sm" hidden>
+      <Icon name="plus" class="h-4 w-4" />
+      Nueva actividad
+    </button>
+  </PageHeader>
+
+  <section class="admin-card mb-4">
+    <div class="flex flex-col gap-3 px-4 py-3 xl:flex-row xl:items-center xl:justify-between">
+      <div class="flex flex-wrap items-center gap-2">
+        <div class="admin-segmented" role="group" aria-label="Vista del calendario">
+          <button type="button" data-view="dia">Día</button>
+          <button type="button" data-view="semana" class="admin-segmented-active">Semana</button>
+          <button type="button" data-view="mes">Mes</button>
+        </div>
+        <div class="flex items-center gap-1">
+          <button type="button" class="admin-icon-btn" data-nav="prev" aria-label="Periodo anterior">
+            <Icon name="chevronLeft" class="h-5 w-5" />
+          </button>
+          <button type="button" class="admin-btn admin-btn-secondary admin-btn-sm" data-nav="today">Hoy</button>
+          <button type="button" class="admin-icon-btn" data-nav="next" aria-label="Periodo siguiente">
+            <Icon name="chevronRight" class="h-5 w-5" />
+          </button>
+        </div>
+        <p id="agenda-period" class="text-sm font-bold text-forest"></p>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <select id="agenda-category-filter" class="admin-select w-48" aria-label="Filtrar por categoría">
+          <option value="">Todas las categorías</option>
+          {EVENT_CATEGORY_VALUES.map((category) => (
+            <option value={category}>{AGENDA_CATEGORY_LABEL[category]}</option>
+          ))}
+        </select>
+        <select id="agenda-status-filter" class="admin-select w-40" aria-label="Filtrar por estatus">
+          <option value="">Todos los estatus</option>
+          {EVENT_STATUS_VALUES.map((status) => (
+            <option value={status}>{EVENT_STATUS_LABEL[status]}</option>
+          ))}
+        </select>
+      </div>
+    </div>
+    <div id="agenda-assignee-filter" class="border-t border-line px-4 py-3"></div>
+  </section>
+
+  <section class="admin-card" aria-label="Calendario de actividades">
+    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-line px-4 py-3">
+      <p id="agenda-count" class="text-xs font-medium text-muted">Cargando…</p>
+      <div id="agenda-legend" class="flex flex-wrap items-center gap-x-3 gap-y-1"></div>
+    </div>
+    <div id="agenda-calendar" class="admin-scroll p-2 sm:p-3">
+      <div class="space-y-3">
+        {Array.from({ length: 8 }).map(() => (
+          <div class="admin-skeleton h-12 w-full"></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import { initAgenda } from '../../../scripts/admin/agenda';
+    initAgenda();
+  </script>
+</AdminLayout>
